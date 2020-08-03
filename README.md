@@ -1,3 +1,5 @@
+![.NET Core](https://github.com/MrJohnB/RunLog/workflows/.NET%20Core/badge.svg)
+
 # Introduction
 RunLog is an activity tracking application.  Users can create/edit/delete activities.  And activity has a start/stop button and while the activity is running, the device's geolocation coordinates are tracked and stored in the RunLog system.
 
@@ -32,15 +34,15 @@ A solution called RunLog will be developed to perform the required operations.
 Note: See below for links to code repositories.
 
 # Documentation
-- [README.md] (this file)
-- [Solution Document] (runlog-solution-document.docx)
-- [RunLog Rest API] (runlog-rest-api-guide.docx)
-- [Diagrams] (runlog-diagrams.drawio)
-- [Installation] (RunLog API Installation Guide.docx)
+- [README.md] (https://github.com/MrJohnB/RunLog/blob/master/README.md)
+- [Solution Document] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-solution-document.docx)
+- [RunLog Rest API] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-rest-api-guide.docx)
+- [Diagrams] (https://github.com/MrJohnB/RunLog/blob/master/docs/diagrams/runlog-diagrams.drawio)
+- [Installation] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/RunLog%20API%20Installation%20Guide.docx)
 
 # GitHub
-- [RunLog Board] (https://github.com)
-- [RunLog Repository] (https://github.com)
+- [RunLog Project] (https://github.com/users/MrJohnB/projects/1)
+- [RunLog Repository] (https://github.com/MrJohnB/RunLog)
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
