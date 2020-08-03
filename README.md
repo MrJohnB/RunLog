@@ -11,7 +11,7 @@ Additional components:
 
 #Tech Stack
 1.	.NET Core 3.1 (for Web API, Blazor WebAssembly and libraries)
-2.	.NET Standard 2.0 (for libraries)
+2.	.NET Standard 2.1 (for libraries)
 3.	LiteBulb MemoryDb 0.1 (for database)
 4.	Swagger (API documentation)
 5.	Serilog (logging)
