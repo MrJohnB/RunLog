@@ -1,0 +1,66 @@
+﻿@page "/activities/{ActivityId}/delete"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Web.Shared 
+@using LiteBulb.RunLog.Models
+
+<h3>Delete Activity</h3>
+<p>Are you sure you want to delete this activity?</p>
+
+<EditForm Model="@activity" OnSubmit="HandleDeleteAsync">
+
+	<div class="form-group">
+		<label for="activityId">Activity Id</label>
+		<InputNumber id="activityId" @bind-Value="@activity.Id" class="form-control" readonly="true" />
+	</div>
+
+	<ActivityForm Activity="@activity" ReadOnly="true" />
+
+	<button type="submit" class="btn btn-primary">Delete</button>
+	<button type="button" @onclick="HandleCancel" class="btn btn-primary">Cancel</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string ActivityId { get; set; }
+
+	private Activity activity = new Activity();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!int.TryParse(ActivityId, out int result))
+		{
+			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
+			Navigation.NavigateTo($"/activities");
+		}
+
+		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
+
+		if (activity != null)
+		{
+			Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
+			return;
+		}
+
+		Console.WriteLine($"Error while sending GET request to API for Activity object.  Activity object with id: '{ActivityId}' was not found.");
+	}
+
+	private async Task HandleDeleteAsync()
+	{
+		var responseMessage = await Http.DeleteAsync($"{Settings.ActivitiesRequestUri}/{activity.Id}");
+
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			Console.WriteLine($"Activity object with id: '{activity.Id}' was deleted successfully.");
+			Navigation.NavigateTo("/activities");
+		}
+
+		Console.WriteLine($"Error while sending DELETE request to API for Activity object.  Activity object with id: '{activity.Id}' was not found.");
+	}
+
+	private void HandleCancel()
+	{
+		Navigation.NavigateTo("/activities");
+	}
+}

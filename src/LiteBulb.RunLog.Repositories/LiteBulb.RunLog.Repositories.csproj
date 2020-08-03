@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LiteBulb.Common\LiteBulb.Common.csproj" />
+    <ProjectReference Include="..\LiteBulb.MemoryDb\LiteBulb.MemoryDb.csproj" />
+    <ProjectReference Include="..\LiteBulb.Repositories\LiteBulb.Repositories.csproj" />
+    <ProjectReference Include="..\LiteBulb.RunLog.Models\LiteBulb.RunLog.Models.csproj" />
+  </ItemGroup>
+
+</Project>

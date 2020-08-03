@@ -1,0 +1,84 @@
+﻿@page "/activities/{ActivityId}/positions/add"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Models
+
+<h3>Add Position</h3>
+<p>Use the form below to create a new position</p>
+
+<EditForm Model="@position" OnValidSubmit="HandleValidSubmitAsync">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<PositionForm Position="@position" ReadOnly="false" />
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="button" @onclick="HandleCancel" class="btn btn-primary">Cancel</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string ActivityId { get; set; }
+
+	private Position position = new Position();
+
+	private void InitializePosition()
+	{
+		if (!int.TryParse(ActivityId, out int result))
+		{
+			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
+			Navigation.NavigateTo($"/activities");
+		}
+
+		position = new Position()
+		{
+			ActivityId = result,
+			TimeStamp = DateTime.Now,
+			Latitude = 0,
+			Longitude = 0,
+			Altitude = 0,
+			Accuracy = 0,
+			AltitudeAccuracy = 0,
+			Heading = 0,
+			Speed = 0
+		};
+	}
+
+	protected override void OnInitialized()
+	{
+		//TODO: Check to see if ActivityId is valid and exists in the database
+
+		InitializePosition();
+	}
+
+	private async Task HandleValidSubmitAsync()
+	{
+		var responseMessage = await Http.PostAsJsonAsync<Position>(Settings.PositionsRequestUri, position);
+
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
+
+			Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
+
+			//TODO: check if Activity with that id exists and display activities list if it doesn't
+			Navigation.NavigateTo($"/activities/{createdPosition.ActivityId}");
+			// Or: Reset the form
+			//InitializePosition();
+			//return;
+		}
+
+		Console.WriteLine($"Error while sending POST request to API for Position object.  StatusCode: {responseMessage.StatusCode}.");
+	}
+
+	private void HandleCancel()
+	{
+		if (string.IsNullOrWhiteSpace(ActivityId))
+			Navigation.NavigateTo($"/activities");
+
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
+
+		Navigation.NavigateTo($"/activities/{ActivityId}");
+	}
+}

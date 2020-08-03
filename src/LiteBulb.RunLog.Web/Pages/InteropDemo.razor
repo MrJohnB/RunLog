@@ -1,0 +1,78 @@
+﻿@page "/interopdemo"
+@inject IJSRuntime JSRuntime;
+
+<h3>JavaScript Interop Demo</h3>
+
+<div>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptMethod">Call JavaScript method that writes to a &lt;p&gt; tag</button>
+	<p id="paragraph"></p>
+</div>
+
+<div>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptFunction">Call JavaScript function that returns a string</button>
+	<p>@javascriptFunctionResponse</p>
+</div>
+
+<div>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallback">Call JavaScript function that invokes a C# callback method</button>
+	<p>@callbackMethodMessage</p>
+</div>
+
+<div>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallbackPassingBackData">Call JavaScript function that invokes a C# callback method that recieves data from JavaScript</button>
+	<p>@dataFromCallbackMethod</p>
+</div>
+
+@code {
+	// https://docs.microsoft.com/en-us/aspnet/core/blazor/call-javascript-from-dotnet
+
+	private string javascriptFunctionResponse;
+	// For JSInvokable static callback method
+	private static string callbackMethodMessage;
+	private static string dataFromCallbackMethod;
+
+	protected override void OnInitialized()
+	{
+		javascriptFunctionResponse = string.Empty;
+		callbackMethodMessage = string.Empty;
+		dataFromCallbackMethod = string.Empty;
+	}
+
+	private void HandleCallJavaScriptMethod()
+	{
+		JSRuntime.InvokeVoidAsync("javascriptMethod");
+	}
+
+	private async Task HandleCallJavaScriptFunction()
+	{
+		javascriptFunctionResponse = await JSRuntime.InvokeAsync<string>("javascriptFunction");
+	}
+
+	private void HandleCallJavaScriptThatInvokesCallback()
+	{
+		JSRuntime.InvokeVoidAsync("javaScriptThatInvokesCallback");
+	}
+
+	private void HandleCallJavaScriptThatInvokesCallbackPassingBackData()
+	{
+		JSRuntime.InvokeVoidAsync("javaScriptThatInvokesCallbackWithData");
+	}
+
+	[JSInvokable]
+	public static void CallbackMethod()
+	{
+		callbackMethodMessage = "C# callback method called from JavaScript";
+	}
+
+	[JSInvokable]
+	public static void CallbackMethodRecievesData(DemoObject input)
+	{
+		dataFromCallbackMethod = input.Message;
+	}
+
+	public class DemoObject
+	{
+		public string Message { get; set; }
+	}
+
+}

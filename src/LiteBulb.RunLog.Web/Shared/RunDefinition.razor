@@ -1,0 +1,36 @@
+﻿<div class="alert alert-secondary mt-4" role="alert">
+	<!--<span class="oi oi-pencil mr-2" aria-hidden="true"></span>-->
+	<strong>@Title</strong>
+
+	<p><em>verb</em></p>
+
+	<ol>
+		<li>
+			move at a speed faster than a walk, never having both or all the feet on the ground at the same time.
+			<br /><span class="text-secondary">"the dog ran across the road"</span>
+		</li>
+
+		<li>
+			pass or cause to pass quickly or smoothly in a particular direction.
+			<br /><span class="text-secondary">"the rumor ran through the pack of photographers"</span>
+		</li>
+	</ol>
+
+	<p><em>noun</em></p>
+
+	<ol>
+		<li>
+			an act or spell of running.
+			<br /><span class="text-secondary">"I usually go for a run in the morning"</span>
+		</li>
+	</ol>
+
+</div>
+
+@code {
+	// How to use component in a page: <Footer Title="How is Blazor working for you?" />
+
+	// Demonstrates how a parent component can supply parameters
+	[Parameter]
+	public string Title { get; set; }
+}

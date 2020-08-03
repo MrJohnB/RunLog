@@ -1,0 +1,59 @@
+﻿@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Models.Enumerations
+
+<div class="form-group">
+	<label for="athleteName">Athlete Name</label>
+	<InputText id="athleteName" @bind-Value="Activity.RunnerName" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="activityType">Activity Type</label>
+	<InputSelect id="activityType" @bind-Value="Activity.Type" class="form-control" disabled="@ReadOnly">
+		<option value="@ActivityType.Undefined">Select Type ...</option>
+		<option value="@ActivityType.Walk">@nameof(ActivityType.Walk)</option>
+		<option value="@ActivityType.Run">@nameof(ActivityType.Run)</option>
+		<option value="@ActivityType.Bike">@nameof(ActivityType.Bike)</option>
+		<option value="@ActivityType.Swim">@nameof(ActivityType.Swim)</option>
+	</InputSelect>
+</div>
+<div class="form-group">
+	<label for="activityStatus">Activity Status</label>
+	<InputSelect id="activityStatus" @bind-Value="Activity.Status" class="form-control" disabled="@ReadOnly">
+		<option value="@ActivityStatus.Undefined">Select Status ...</option>
+		<option value="@ActivityStatus.Pending">@nameof(ActivityStatus.Pending)</option>
+		<option value="@ActivityStatus.Started">@nameof(ActivityStatus.Started)</option>
+		<option value="@ActivityStatus.Paused">@nameof(ActivityStatus.Paused)</option>
+		<option value="@ActivityStatus.Complete">@nameof(ActivityStatus.Complete)</option>
+	</InputSelect>
+</div>
+<div class="form-group">
+	<label for="activityDescription">Description</label>
+	<InputText id="activityDescription" @bind-Value="Activity.Description" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="activityDistanceUnits">Distance Units</label>
+	<InputSelect id="activityDistanceUnits" @bind-Value="Activity.Units" class="form-control" disabled="@ReadOnly">
+		<option value="@DistanceUnits.Undefined">Select Units ...</option>
+		<option value="@DistanceUnits.Miles">@nameof(DistanceUnits.Miles)</option>
+		<option value="@DistanceUnits.Kilometers">@nameof(DistanceUnits.Kilometers)</option>
+	</InputSelect>
+</div>
+<div class="form-group">
+	<label for="createdAtDate">Created at Date</label>
+	<InputDate id="createdAtDate" @bind-Value="Activity.CreatedAt" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="startedAtDate">Started at Date</label>
+	<InputDate id="startedAtDate" @bind-Value="Activity.StartedAt" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="completedAtDate">Completed at Date</label>
+	<InputDate id="completedAtDate" @bind-Value="Activity.CompletedAt" class="form-control" readonly="@ReadOnly" />
+</div>
+
+@code {
+	[Parameter]
+	public Activity Activity { get; set; }
+
+	[Parameter]
+	public bool ReadOnly { get; set; }
+}

@@ -1,0 +1,63 @@
+﻿@page "/activities/add"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Models
+
+<h3>Add Activity</h3>
+<p>Use the form below to create a new activity</p>
+
+<EditForm Model="@activity" OnValidSubmit="HandleValidSubmitAsync">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<ActivityForm Activity="@activity" ReadOnly="false" />
+
+	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="button" @onclick="HandleCancel" class="btn btn-primary">Cancel</button>
+</EditForm>
+
+@code {
+	private Activity activity = new Activity();
+
+	private void InitializeActivity()
+	{
+		var now = DateTime.Now;
+		this.activity = new Activity()
+		{
+			CreatedAt = now,
+			StartedAt = now,
+			CompletedAt = now
+		};
+	}
+
+	protected override void OnInitialized()
+	{
+		InitializeActivity();
+	}
+
+	private async Task HandleValidSubmitAsync()
+	{
+		var responseMessage = await Http.PostAsJsonAsync<Activity>(Settings.ActivitiesRequestUri, activity);
+
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			var createdActivity = await responseMessage.Content.ReadFromJsonAsync<Activity>();
+
+			Console.WriteLine($"Activity object with id: '{createdActivity.Id}' was created successfully.");
+			Navigation.NavigateTo("/activities");
+			// Or: Reset the form
+			//InitializeActivity();
+			//return;
+		}
+
+		Console.WriteLine($"Error while sending POST request to API for Activity object.  StatusCode: {responseMessage.StatusCode}.");
+	}
+
+	private void HandleCancel()
+	{
+		//TODO: send to ViewActivity
+
+		Navigation.NavigateTo("/activities");
+	}
+}

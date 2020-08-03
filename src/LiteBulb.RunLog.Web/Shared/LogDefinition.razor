@@ -1,0 +1,30 @@
+﻿<div class="alert alert-secondary mt-4" role="alert">
+	<!--<span class="oi oi-pencil mr-2" aria-hidden="true"></span>-->
+	<strong>@Title</strong>
+
+	<p><em>noun</em></p>
+
+	<ol>
+		<li>
+			an official record of events during the voyage of a ship or aircraft.
+			<br /><span class="text-secondary">"a ship's log"</span>
+		</li>
+	</ol>
+
+	<p><em>verb</em></p>
+
+	<ol>
+		<li>
+			enter (an incident or fact) in the log of a ship or aircraft or in another systematic record.
+			<br /><span class="text-secondary">"the incident has to be logged"</span>
+		</li>
+	</ol>
+</div>
+
+@code {
+	// How to use component in a page: <Footer Title="How is Blazor working for you?" />
+
+	// Demonstrates how a parent component can supply parameters
+	[Parameter]
+	public string Title { get; set; }
+}

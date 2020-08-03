@@ -1,0 +1,70 @@
+﻿@page "/activities/{ActivityId}/positions/{PositionId}/edit"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Models
+
+<h3>Edit Position</h3>
+<p>Use the form below to edit this position</p>
+
+<EditForm Model="@position" OnValidSubmit="HandleValidSubmitAsync">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="form-group">
+		<label for="positionId">Position Id</label>
+		<InputNumber id="positionId" @bind-Value="@position.Id" class="form-control" readonly="true" />
+	</div>
+	<PositionForm Position="@position" ReadOnly="false" />
+
+	<button type="submit" class="btn btn-primary">Update</button>
+	<button type="button" @onclick="HandleCancel" class="btn btn-primary">Cancel</button>
+</EditForm>
+
+@code {
+	[Parameter]
+	public string ActivityId { get; set; }
+
+	[Parameter]
+	public string PositionId { get; set; }
+
+	private Position position = new Position();
+
+	protected override async Task OnInitializedAsync()
+	{
+		//TODO: Check to see if ActivityId is valid and exists in the database
+
+		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
+
+		if (position != null)
+		{
+			//TOOD: if (position.ActivityId != ActivityId)
+
+			Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+			return;
+		}
+
+		Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
+	}
+
+	private async Task HandleValidSubmitAsync()
+	{
+		var responseMessage = await Http.PutAsJsonAsync($"{Settings.PositionsRequestUri}/{position.Id}", position);
+
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			Console.WriteLine($"Position object with id: '{position.Id}' was updated successfully.");
+			//TODO: check if Activity with that id exists and display activities list if it doesn't
+			Navigation.NavigateTo($"/activities/{position.ActivityId}");
+		}
+
+		Console.WriteLine($"Error while sending PUT request to API for Position object with id: '{position.Id}'.  StatusCode: {responseMessage.StatusCode}.");
+	}
+
+	private void HandleCancel()
+	{
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
+
+		Navigation.NavigateTo($"/activities/{position.ActivityId}");
+	}
+}

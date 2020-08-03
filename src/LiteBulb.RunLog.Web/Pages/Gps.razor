@@ -1,0 +1,102 @@
+﻿@page "/gps"
+@inject IJSRuntime JSRuntime;
+@using LiteBulb.RunLog.Web.ViewModels
+
+<h3>Demo GPS Test</h3>
+<p>
+	<button class="btn btn-primary" type="button" @onclick="HandleGetPosition">Get GPS Location</button>
+</p>
+<div>
+	<h4>You are here:</h4>
+@if (PositionViewModel == null)
+{
+	<p><em>Waiting for you to click "Get GPS Location"...</em></p>
+}
+else {
+	<div class="form-group">
+		<label for="timeStamp">Time Stamp:</label>
+		<div id="timeStamp">@PositionViewModel?.TimeStamp</div>
+	</div>
+	<div class="form-group">
+		<label for="latitude">Latitude:</label>
+		<div id="latitude">@PositionViewModel?.Latitude</div>
+	</div>
+	<div class="form-group">
+		<label for="longitude">Longitude:</label>
+		<div id="longitude">@PositionViewModel?.Longitude</div>
+	</div>
+if (PositionViewModel.Altitude.HasValue)
+{
+	<div class="form-group">
+		<label for="altitude">Altitude:</label>
+		<div id="altitude">@PositionViewModel?.Altitude</div>
+	</div>
+}
+	<div class="form-group">
+		<label for="accuracy">Accuracy:</label>
+		<div id="accuracy">@PositionViewModel?.Accuracy</div>
+	</div>
+if (PositionViewModel.AltitudeAccuracy.HasValue)
+{
+	<div class="form-group">
+		<label for="altitudeAccuracy">Altitude Accuracy:</label>
+		<div id="altitudeAccuracy">@PositionViewModel?.AltitudeAccuracy</div>
+	</div>
+}
+if (PositionViewModel.Heading.HasValue)
+{
+	<div class="form-group">
+		<label for="heading">Heading:</label>
+		<div id="heading">@PositionViewModel?.Heading</div>
+	</div>
+}
+if (PositionViewModel.Speed.HasValue)
+{
+	<div class="form-group">
+		<label for="speed">Speed:</label>
+		<div id="speed">@PositionViewModel?.Speed</div>
+	</div>
+}
+}
+</div>
+
+@code {
+	// https://docs.microsoft.com/en-us/aspnet/core/blazor/call-javascript-from-dotnet
+	//@inject LocationService LocationService
+	//private Location location = new Location();
+
+	// For JSInvokable static callback method
+	private static Action stateHasChanged;
+	private static PositionViewModel PositionViewModel;
+
+	protected override void OnInitialized()
+	{
+		//location = await LocationService.GetLocationAsync();
+
+		// For JSInvokable static callback method
+		stateHasChanged = () => this.StateHasChanged();
+	}
+
+	//protected override async Task OnAfterRenderAsync(bool first)
+	//{
+	//	if (first)
+	//	{
+	//		base.OnAfterRender(first);
+	//		await GetLocation();
+	//	}
+	//}
+
+	private async Task HandleGetPosition()
+	{
+		//location = await LocationService.GetLocationAsync();
+		// this.StateHasChanged();
+		await JSRuntime.InvokeVoidAsync("getPosition", "LiteBulb.RunLog.Web", "DemoGetPositionCallback");
+	}
+
+	[JSInvokable("DemoGetPositionCallback")]
+	public static void PositionCallback(PositionViewModel positionViewModel)
+	{
+		PositionViewModel = positionViewModel;
+		stateHasChanged();
+	}
+}

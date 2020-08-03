@@ -1,0 +1,46 @@
+﻿@using LiteBulb.RunLog.Models
+
+<div class="form-group">
+	<label for="activityId">Activity Id</label>
+	<InputNumber id="activityId" @bind-Value="Position.ActivityId" class="form-control" readonly="false" />
+</div>
+<div class="form-group">
+	<label for="time">Time Stamp</label>
+	<InputDate id="time" @bind-Value="Position.TimeStamp" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="latitude">Latitude</label>
+	<InputNumber id="latitude" @bind-Value="Position.Latitude" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="longitude">Longitude</label>
+	<InputNumber id="longitude" @bind-Value="Position.Longitude" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="altitude">Altitude</label>
+	<InputNumber id="altitude" @bind-Value="Position.Altitude" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="accuracy">Accuracy</label>
+	<InputNumber id="accuracy" @bind-Value="Position.Accuracy" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="altitudeAccuracy">AltitudeAccuracy</label>
+	<InputNumber id="altitudeAccuracy" @bind-Value="Position.AltitudeAccuracy" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="heading">Heading</label>
+	<InputNumber id="heading" @bind-Value="Position.Heading" class="form-control" readonly="@ReadOnly" />
+</div>
+<div class="form-group">
+	<label for="speed">Speed</label>
+	<InputNumber id="speed" @bind-Value="Position.Speed" class="form-control" readonly="@ReadOnly" />
+</div>
+
+@code {
+	[Parameter]
+	public Position Position { get; set; }
+
+	[Parameter]
+	public bool ReadOnly { get; set; }
+}

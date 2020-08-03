@@ -1,0 +1,51 @@
+﻿@using LiteBulb.RunLog.Models
+
+@if (Positions == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Activity</th>
+				<th>Time Stamp</th>
+				<th>Latitude</th>
+				<th>Longitude</th>
+				<th>Altitude</th>
+				<th>Accuracy</th>
+				<th>Altitude Accuracy</th>
+				<th>Heading</th>
+				<th>Speed</th>
+				<th><span class="invisible">Edit</span></th>
+				<th><span class="invisible">Delete</span></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var position in Positions)
+			{
+				<tr>
+					<td>@position.Id.ToString()</td>
+					<td>@position.ActivityId.ToString()</td>
+					<td>@position.TimeStamp</td>
+					<td>@string.Format("{0:F7}", position.Latitude)</td>
+					<td>@string.Format("{0:F7}", position.Longitude)</td>
+					<td>@string.Format("{0:F1}", position.Altitude)</td>
+					<td>@string.Format("{0:F1}", position.Accuracy)</td>
+					<td>@string.Format("{0:F1}", position.AltitudeAccuracy)</td>
+					<td>@string.Format("{0:F1}", position.Heading)</td>
+					<td>@string.Format("{0:F1}", position.Speed)</td>
+					<td><a class="btn btn-primary" href="/activities/@position.ActivityId/positions/@position.Id/edit">Edit</a></td>
+					<td><a class="btn btn-primary" href="/activities/@position.ActivityId/positions/@position.Id/delete">Delete</a></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+	[Parameter]
+	public Position[] Positions { get; set; }
+}

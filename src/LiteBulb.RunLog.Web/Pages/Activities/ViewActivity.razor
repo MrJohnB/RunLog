@@ -1,0 +1,88 @@
+﻿@page "/activities/{ActivityId}"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject ApiSettings Settings
+@inject IJSRuntime JSRuntime;
+@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Web.ViewModels
+
+<h3>View Activity</h3>
+<p>Show some cool activity details here</p>
+
+<p>
+	<button type="button" @onclick="HandleAddPosition" class="btn btn-primary">Add Position</button>
+	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary">Add Current GPS Position</button>
+</p>
+
+<PositionList Positions="@activity.Positions.ToArray()" />
+
+<button type="button" @onclick="HandleBack" class="btn btn-primary">Back</button>
+
+@code {
+	[Parameter]
+	public string ActivityId { get; set; }
+
+	// For JSInvokable static callback method
+	private static Action stateHasChanged;
+	private static Activity activity = new Activity();
+	private static HttpClient http;
+	private static ApiSettings settings;
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (!int.TryParse(ActivityId, out int result))
+		{
+			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
+			Navigation.NavigateTo($"/activities");
+		}
+
+		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
+
+		if (activity != null)
+		{
+			Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
+
+			// For JSInvokable static callback method
+			stateHasChanged = () => this.StateHasChanged();
+			http = Http;
+			settings = Settings;
+			return;
+		}
+
+		Console.WriteLine($"Error while sending GET request to API for Activity object with id: '{ActivityId}'.");
+	}
+
+	private async Task HandleAddCurrentGpsPosition()
+	{
+		await JSRuntime.InvokeVoidAsync("getPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
+	}
+
+	[JSInvokable("GetPositionCallback")]
+	public static async Task PositionCallback(PositionViewModel positionViewModel)
+	{
+		Position position = positionViewModel;
+		position.ActivityId = activity.Id;
+
+		var responseMessage = await http.PostAsJsonAsync<Position>(settings.PositionsRequestUri, position);
+
+		if (responseMessage.IsSuccessStatusCode)
+		{
+			var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
+
+			Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
+
+			activity.Positions.Add(createdPosition);
+			stateHasChanged();
+		}
+	}
+
+	private void HandleAddPosition()
+	{
+		Navigation.NavigateTo($"/activities/{ActivityId}/positions/add");
+	}
+
+	private void HandleBack()
+	{
+		Navigation.NavigateTo("/activities");
+	}
+}

@@ -1,0 +1,42 @@
+﻿@page "/activities/{ActivityId}/positions/{PositionId}"
+@inject HttpClient Http
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Models
+
+<h3>View Position</h3>
+<p>Position details</p>
+
+<EditForm Model="@position">
+
+	<div class="form-group">
+		<label for="positionId">Position Id</label>
+		<InputNumber id="positionId" @bind-Value="@position.Id" class="form-control" readonly="true" />
+	</div>
+
+	<PositionForm Position="@position" ReadOnly="true" />
+</EditForm>
+
+@code {
+	[Parameter]
+	public string ActivityId { get; set; }
+
+	[Parameter]
+	public string PositionId { get; set; }
+
+	private Position position = new Position();
+
+	protected override async Task OnInitializedAsync()
+	{
+		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
+
+		//TODO: check for 404 status code
+
+		if (position != null)
+		{
+			Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+			return;
+		}
+
+		Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
+	}
+}

@@ -1,0 +1,44 @@
+﻿@page "/activities/positions"
+@inject HttpClient Http
+@inject ApiSettings Settings
+@using LiteBulb.RunLog.Web.Shared 
+@using System.Timers
+@using LiteBulb.RunLog.Models
+
+<h3>Positions</h3>
+<p>A list of all positions in the system</p>
+
+<PositionList Positions="@positions" />
+
+@code {
+	private Position[] positions;
+	private Timer timer;
+
+	protected override async Task OnInitializedAsync()
+	{
+		positions = await GetPositions();
+
+		StartTimer();
+	}
+
+	private async Task<Position[]> GetPositions() => await Http.GetFromJsonAsync<Position[]>(Settings.PositionsRequestUri);
+
+	private void StartTimer()
+	{
+		timer = new Timer(2000);
+		timer.Elapsed += TimerElapsedHandler;
+		timer.Start();
+		Console.WriteLine("Timer Started (List Positions).");
+	}
+
+	private async void TimerElapsedHandler(Object source, ElapsedEventArgs e)
+	{
+		positions = await GetPositions();
+
+		// Note that the following line is necessary because otherwise
+		// Blazor would not recognize the state change and not refresh the UI
+		await InvokeAsync(() => { StateHasChanged(); });
+
+		Console.WriteLine("Timer Elapsed (List Positions).");
+	}
+}
