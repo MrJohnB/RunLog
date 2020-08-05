@@ -56,3 +56,45 @@ function positionErrorCallback(error) {
 			console.warn("Error code: '${error.code}'.  Error message: '${error.message}'.");
 	}
 }
+
+var watchPositionId; //TODO: what if there's multiple users of the system?
+//var watchPositionList = [];
+
+function startWatchPosition(appAssemblyName, positionCallbackName) {
+	this.appAssemblyName = appAssemblyName;
+	this.positionCallbackName = positionCallbackName;
+
+	if (navigator.geolocation) {
+		watchPositionId = navigator.geolocation.watchPosition(watchPositionCallback, positionErrorCallback, positionOptions);
+		console.log("Geolocation method watchPosition() started.");
+	}
+	else
+		console.log("Geolocation is not supported by this browser.");
+}
+
+function watchPositionCallback(geolocationPosition) {
+	var positionViewModel = {
+		timeStamp: new Date(geolocationPosition.timestamp),
+		latitude: geolocationPosition.coords.latitude,
+		longitude: geolocationPosition.coords.longitude,
+		altitude: geolocationPosition.coords.altitude,
+		accuracy: geolocationPosition.coords.accuracy,
+		altitudeAccuracy: geolocationPosition.coords.altitudeAccuracy,
+		heading: geolocationPosition.coords.heading,
+		speed: geolocationPosition.coords.speed,
+		satelliteCount: null
+	};
+
+	console.log(positionViewModel);
+
+	DotNet.invokeMethodAsync(this.appAssemblyName, this.positionCallbackName, positionViewModel);
+}
+
+function stopWatchPosition(appAssemblyName, stopWatchPositionCallbackName) {
+	if (navigator.geolocation) {
+		navigator.geolocation.clearWatch(watchPositionId);
+		console.log("Geolocation method watchPosition() stopped.");
+	}
+	else
+		console.log("Geolocation is not supported by this browser.  Geolocation method watchPosition() cannot be cleared.");
+}

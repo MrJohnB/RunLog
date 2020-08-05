@@ -12,6 +12,8 @@
 <p>
 	<button type="button" @onclick="HandleAddPosition" class="btn btn-primary">Add Position</button>
 	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary">Add Current GPS Position</button>
+	<button type="button" @onclick="HandleStartWatchGpsPosition" class="btn btn-primary" disabled="@startButtonDisabled">Start</button>
+	<button type="button" @onclick="HandleStopWatchGpsPosition" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
 </p>
 
 <PositionList Positions="@activity.Positions.ToArray()" />
@@ -22,6 +24,10 @@
 	[Parameter]
 	public string ActivityId { get; set; }
 
+	private bool started = false;
+	private bool startButtonDisabled => started;
+	private bool stopButtonDisabled => !started;
+
 	// For JSInvokable static callback method
 	private static Action stateHasChanged;
 	private static Activity activity = new Activity();
@@ -30,6 +36,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		started = false;
+
 		if (!int.TryParse(ActivityId, out int result))
 		{
 			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
@@ -54,6 +62,7 @@
 
 	private async Task HandleAddCurrentGpsPosition()
 	{
+		//TODO: replace Void with the return type of this jsvascript function
 		await JSRuntime.InvokeVoidAsync("getPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
 	}
 
@@ -74,6 +83,18 @@
 			activity.Positions.Add(createdPosition);
 			stateHasChanged();
 		}
+	}
+
+	private async Task HandleStartWatchGpsPosition()
+	{
+		started = true;
+		await JSRuntime.InvokeVoidAsync("startWatchPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
+	}
+
+	private async Task HandleStopWatchGpsPosition()
+	{
+		started = false;
+		await JSRuntime.InvokeVoidAsync("stopWatchPosition", "LiteBulb.RunLog.Web", "StopWatchPositionCallback");
 	}
 
 	private void HandleAddPosition()
