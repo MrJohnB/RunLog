@@ -40,24 +40,24 @@
 	{
 		var responseMessage = await Http.PostAsJsonAsync<Activity>(Settings.ActivitiesRequestUri, activity);
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			var createdActivity = await responseMessage.Content.ReadFromJsonAsync<Activity>();
-
-			Console.WriteLine($"Activity object with id: '{createdActivity.Id}' was created successfully.");
-			Navigation.NavigateTo("/activities");
-			// Or: Reset the form
-			//InitializeActivity();
-			//return;
+			Console.WriteLine($"Error while sending POST request to API for Activity object.  StatusCode: {responseMessage.StatusCode}.");
+			return;
 		}
 
-		Console.WriteLine($"Error while sending POST request to API for Activity object.  StatusCode: {responseMessage.StatusCode}.");
+		var createdActivity = await responseMessage.Content.ReadFromJsonAsync<Activity>();
+
+		Console.WriteLine($"Activity object with id: '{createdActivity.Id}' was created successfully.");
+		Navigation.NavigateTo("/activities");
+		// Or: Reset the form
+		//InitializeActivity();
 	}
 
 	private void HandleCancel()
 	{
-		//TODO: send to ViewActivity
-
 		Navigation.NavigateTo("/activities");
+
+		//TODO: maybe send to ViewActivity?
 	}
 }

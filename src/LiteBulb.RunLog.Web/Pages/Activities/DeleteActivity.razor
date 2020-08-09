@@ -33,30 +33,32 @@
 		{
 			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
 			Navigation.NavigateTo($"/activities");
+			return;
 		}
 
 		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
 
-		if (activity != null)
+		if (activity == null)
 		{
-			Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
+			Console.WriteLine($"Error while sending GET request to API for Activity object.  Activity object with id: '{ActivityId}' was not found.");
 			return;
 		}
 
-		Console.WriteLine($"Error while sending GET request to API for Activity object.  Activity object with id: '{ActivityId}' was not found.");
+		Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
 	}
 
 	private async Task HandleDeleteAsync()
 	{
 		var responseMessage = await Http.DeleteAsync($"{Settings.ActivitiesRequestUri}/{activity.Id}");
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			Console.WriteLine($"Activity object with id: '{activity.Id}' was deleted successfully.");
-			Navigation.NavigateTo("/activities");
+			Console.WriteLine($"Error while sending DELETE request to API for Activity object.  Activity object with id: '{activity.Id}' was not found.");
+			return;
 		}
 
-		Console.WriteLine($"Error while sending DELETE request to API for Activity object.  Activity object with id: '{activity.Id}' was not found.");
+		Console.WriteLine($"Activity object with id: '{activity.Id}' was deleted successfully.");
+		Navigation.NavigateTo("/activities");
 	}
 
 	private void HandleCancel()

@@ -70,7 +70,7 @@ else
 
 	private async Task<Activity[]> GetActivities() => await Http.GetFromJsonAsync<Activity[]>(Settings.ActivitiesRequestUri);
 
-	//TODO: get rid of timer!
+	//TODO: get rid of timer
 	private void StartTimer()
 	{
 		timer = new Timer(timerInterval);

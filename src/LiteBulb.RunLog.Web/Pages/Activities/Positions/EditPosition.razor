@@ -36,35 +36,36 @@
 
 		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
 
-		if (position != null)
+		if (position == null)
 		{
-			//TOOD: if (position.ActivityId != ActivityId)
-
-			Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+			Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
 			return;
 		}
 
-		Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
+		//TOOD: if (position.ActivityId != ActivityId)
+
+		Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
 	}
 
 	private async Task HandleValidSubmitAsync()
 	{
 		var responseMessage = await Http.PutAsJsonAsync($"{Settings.PositionsRequestUri}/{position.Id}", position);
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			Console.WriteLine($"Position object with id: '{position.Id}' was updated successfully.");
-			//TODO: check if Activity with that id exists and display activities list if it doesn't
-			Navigation.NavigateTo($"/activities/{position.ActivityId}");
+			Console.WriteLine($"Error while sending PUT request to API for Position object with id: '{position.Id}'.  StatusCode: {responseMessage.StatusCode}.");
+			return;
 		}
 
-		Console.WriteLine($"Error while sending PUT request to API for Position object with id: '{position.Id}'.  StatusCode: {responseMessage.StatusCode}.");
+		Console.WriteLine($"Position object with id: '{position.Id}' was updated successfully.");
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
+		Navigation.NavigateTo($"/activities/{position.ActivityId}");
 	}
 
 	private void HandleCancel()
 	{
-		//TODO: check if Activity with that id exists and display activities list if it doesn't
-
 		Navigation.NavigateTo($"/activities/{position.ActivityId}");
+
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
 	}
 }

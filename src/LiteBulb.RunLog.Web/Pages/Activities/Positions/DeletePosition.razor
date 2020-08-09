@@ -35,36 +35,37 @@
 
 		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
 
-		if (position != null)
+		if (position == null)
 		{
-			Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+			Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
 			return;
 		}
 
-		Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
+		Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
 	}
 
 	private async Task HandleDeleteAsync()
 	{
 		var responseMessage = await Http.DeleteAsync($"{Settings.PositionsRequestUri}/{position.Id}");
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			Console.WriteLine($"Position object with id: '{position.Id}' was deleted successfully.");
-			//TODO: check if Activity with that id exists and display activities list if it doesn't
-			Navigation.NavigateTo($"/activities/{position.ActivityId}");
+			Console.WriteLine($"Error while sending DELETE request to API for Position object.  Position object with id: '{position.Id}' was not found.");
+			return;
 		}
 
-		Console.WriteLine($"Error while sending DELETE request to API for Position object.  Position object with id: '{position.Id}' was not found.");
+		Console.WriteLine($"Position object with id: '{position.Id}' was deleted successfully.");
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
+		Navigation.NavigateTo($"/activities/{position.ActivityId}");
 	}
 
 	private void HandleCancel()
 	{
 		if (string.IsNullOrWhiteSpace(ActivityId))
 			Navigation.NavigateTo($"/activities");
+		else
+			Navigation.NavigateTo($"/activities/{ActivityId}");
 
 		//TODO: check if Activity with that id exists and display activities list if it doesn't
-
-		Navigation.NavigateTo($"/activities/{ActivityId}");
 	}
 }

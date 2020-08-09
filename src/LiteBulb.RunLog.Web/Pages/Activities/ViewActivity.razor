@@ -48,22 +48,24 @@
 		{
 			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
 			Navigation.NavigateTo($"/activities");
+			return;
 		}
 
 		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
 
-		if (activity != null)
+		if (activity == null)
 		{
-			Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
-
-			// For JSInvokable static callback method
-			stateHasChanged = () => this.StateHasChanged();
-			http = Http;
-			settings = Settings;
+			Console.WriteLine($"Error while sending GET request to API for Activity object with id: '{ActivityId}'.");
 			return;
 		}
 
-		Console.WriteLine($"Error while sending GET request to API for Activity object with id: '{ActivityId}'.");
+		Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
+
+		// For JSInvokable static callback method
+		stateHasChanged = () => this.StateHasChanged();
+		http = Http;
+		settings = Settings;
+
 	}
 
 	private async Task HandleAddCurrentGpsPosition()
@@ -80,22 +82,23 @@
 
 		var responseMessage = await http.PostAsJsonAsync<Position>(settings.PositionsRequestUri, position);
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
-
-			Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
-
-			activity.Positions.Add(createdPosition);
-			stateHasChanged();
+			Console.WriteLine($"Error while sending POST request to API for Position object with Activity id: '{activity.Id}'.  In GetPositionCallback JSInvokable method.  StatusCode: {responseMessage.StatusCode}.");
+			return;
 		}
+
+		var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
+
+		Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
+
+		activity.Positions.Add(createdPosition);
+		stateHasChanged();
 	}
 
 	private void HandleStartButton()
 	{
-		if (timer == null)
-			InitializeTimer();
-
+		InitializeTimer();
 		started = true;
 		timer.Start();
 		Console.WriteLine("Timer started (View Activity).");
@@ -110,6 +113,9 @@
 
 	private void InitializeTimer()
 	{
+		if (timer != null)
+			return;
+
 		timer = new Timer(timerInterval);
 		timer.Elapsed += TimerElapsedHandler;
 		Console.WriteLine("Timer initialized (View Activity).");

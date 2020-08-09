@@ -31,12 +31,12 @@
 
 		//TODO: check for 404 status code
 
-		if (position != null)
+		if (position == null)
 		{
-			Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+			Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
 			return;
 		}
 
-		Console.WriteLine($"Error while sending GET request to API for Position object with id: '{PositionId}'.");
+		Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
 	}
 }

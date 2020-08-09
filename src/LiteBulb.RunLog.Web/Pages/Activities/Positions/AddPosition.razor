@@ -29,6 +29,7 @@
 		{
 			Console.WriteLine($"Error while trying to parse Activity Id passed in.  The value: '{ActivityId}' is not a valid integer.");
 			Navigation.NavigateTo($"/activities");
+			return;
 		}
 
 		position = new Position()
@@ -56,29 +57,29 @@
 	{
 		var responseMessage = await Http.PostAsJsonAsync<Position>(Settings.PositionsRequestUri, position);
 
-		if (responseMessage.IsSuccessStatusCode)
+		if (!responseMessage.IsSuccessStatusCode)
 		{
-			var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
-
-			Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
-
-			//TODO: check if Activity with that id exists and display activities list if it doesn't
-			Navigation.NavigateTo($"/activities/{createdPosition.ActivityId}");
-			// Or: Reset the form
-			//InitializePosition();
-			//return;
+			Console.WriteLine($"Error while sending POST request to API for Position object.  StatusCode: {responseMessage.StatusCode}.");
+			return;
 		}
 
-		Console.WriteLine($"Error while sending POST request to API for Position object.  StatusCode: {responseMessage.StatusCode}.");
+		var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
+
+		Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
+
+		//TODO: check if Activity with that id exists and display activities list if it doesn't
+		Navigation.NavigateTo($"/activities/{createdPosition.ActivityId}");
+		// Or: Reset the form
+		//InitializePosition();
 	}
 
 	private void HandleCancel()
 	{
 		if (string.IsNullOrWhiteSpace(ActivityId))
 			Navigation.NavigateTo($"/activities");
+		else
+			Navigation.NavigateTo($"/activities/{ActivityId}");
 
 		//TODO: check if Activity with that id exists and display activities list if it doesn't
-
-		Navigation.NavigateTo($"/activities/{ActivityId}");
 	}
 }
