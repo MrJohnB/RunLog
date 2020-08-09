@@ -69,21 +69,38 @@ namespace LiteBulb.MemoryDb
 		}
 
 		/// <summary>
-		/// Count of documents in the collection.
+		/// Count of all documents in the collection.
 		/// </summary>
-		public int Count
+		public int Count()
 		{
-			get
+			int count = 0;
+
+			lock (syncLock)
 			{
-				int count = 0;
-
-				lock (syncLock)
-				{
-					count = _items.Count;
-				}
-
-				return count;
+				count = _items.Count;
 			}
+
+			return count;
+		}
+
+		/// <summary>
+		/// Count documents in the collection with a search filter.
+		/// </summary>
+		/// <param name="filter">Filter to use to search collection</param>
+		/// <returns>Number of documents matching the given search terms</returns>
+		public int Count(Func<TDocument, bool> filter)
+		{
+			if (filter == null)
+				throw new ArgumentNullException();
+
+			int count = 0;
+
+			lock (syncLock)
+			{
+				_items.Values.Count(filter);
+			}
+
+			return count;
 		}
 
 		/// <summary>

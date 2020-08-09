@@ -56,6 +56,14 @@ namespace LiteBulb.RunLog.Models
 		/// </summary>
 		public List<Position> Positions { get; set; }
 
+		/// <summary>
+		/// Number of Position objects that belong to this Activity.
+		/// Note: this is an optimization property so we don't have to map Position children to each Activity,
+		/// but we can still display the count.  This will be used when retrieving a list of Activities,
+		/// but not when getting a single Activity.
+		/// </summary>
+		public int PositionCount { get; set; }
+
 		public Activity()
 		{
 			Id = int.MinValue;
@@ -68,6 +76,7 @@ namespace LiteBulb.RunLog.Models
 			Description = string.Empty;
 			Units = DistanceUnits.Undefined;
 			Positions = new List<Position>();
+			PositionCount = int.MinValue;
 		}
 	}
 }

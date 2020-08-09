@@ -164,6 +164,26 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		}
 
 		/// <summary>
+		/// Returns all Activity objects along with the count of Position objects that belong to them.
+		/// Note: does not map Position child collection to parent Activity.
+		/// </summary>
+		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
+		public override IEnumerable<Activity> GetAll()
+		{
+			//TODO: make paged
+
+			var activities = Collection.FindAll();
+
+			if (activities == null)
+				return null;
+
+			foreach (var activity in activities)
+				activity.PositionCount = _positionCollection.Count(x => x.ActivityId == activity.Id);
+
+			return activities;
+		}
+
+		/// <summary>
 		/// Find single Activity object along with the Position objects that belong to it.
 		/// </summary>
 		/// <param name="id">Activity id</param>
@@ -186,7 +206,7 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
 		public IEnumerable<Activity> GetAllMapped()
 		{
-			var activities = GetAll().ToList(); // Could GetAll() return null?
+			var activities = Collection.FindAll().ToArray(); //TODO: why ToArray() needed?
 
 			if (activities == null)
 				return null;
@@ -194,6 +214,7 @@ namespace LiteBulb.RunLog.Repositories.Activities
 			foreach (var activity in activities)
 			{
 				MapPositionChildren(activity);
+				activity.PositionCount = activity.Positions.Count;
 			}
 
 			return activities;

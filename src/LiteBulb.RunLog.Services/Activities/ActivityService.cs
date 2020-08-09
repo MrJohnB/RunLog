@@ -24,11 +24,12 @@ namespace LiteBulb.RunLog.Services.Activities
 
 		/// <summary>
 		/// Get list of objects (entities or documents) from the Activity collection.
+		/// Note: does not include the Position child collection for each Activity.
 		/// </summary>
 		/// <returns>Collection of Activity objects</returns>
 		public ServiceResponse<IEnumerable<Activity>> GetList()
 		{
-			var result = _repository.GetAllMapped();
+			var result = _repository.GetAll(); // GetAllMapped()
 
 			if (result == null)
 			{

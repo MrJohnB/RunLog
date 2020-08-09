@@ -15,9 +15,16 @@ namespace LiteBulb.MemoryDb
 		string Name { get; }
 
 		/// <summary>
-		/// Count of documents in the collection.
+		/// Count of all documents in the collection.
 		/// </summary>
-		int Count { get; }
+		int Count();
+
+		/// <summary>
+		/// Count documents in the collection with a search filter.
+		/// </summary>
+		/// <param name="filter">Filter to use to search collection</param>
+		/// <returns>Number of documents matching the given search terms</returns>
+		int Count(Func<TDocument, bool> filter);
 
 		/// <summary>
 		/// Get full list of documents currently in the collection.

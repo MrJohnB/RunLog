@@ -15,7 +15,7 @@ namespace LiteBulb.RunLog.Repositories
 		public virtual IEnumerable<TModel> GetAll()
 		{
 			//TODO: make paged
-			return Collection.FindAll();
+			return Collection.FindAll(); //TODO: could this return null?
 		}
 
 		public virtual IEnumerable<TModel> Get(Func<TModel, bool> filter)
