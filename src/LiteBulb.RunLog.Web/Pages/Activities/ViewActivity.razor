@@ -1,8 +1,10 @@
 ﻿@page "/activities/{ActivityId}"
+@implements IDisposable
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ApiSettings Settings
 @inject IJSRuntime JSRuntime;
+@using System.Timers;
 @using LiteBulb.RunLog.Models
 @using LiteBulb.RunLog.Web.ViewModels
 
@@ -12,8 +14,8 @@
 <p>
 	<button type="button" @onclick="HandleAddPosition" class="btn btn-primary">Add Position</button>
 	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary">Add Current GPS Position</button>
-	<button type="button" @onclick="HandleStartWatchGpsPosition" class="btn btn-primary" disabled="@startButtonDisabled">Start</button>
-	<button type="button" @onclick="HandleStopWatchGpsPosition" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
+	<button type="button" @onclick="HandleStartButton" class="btn btn-primary" disabled="@startButtonDisabled">Start</button>
+	<button type="button" @onclick="HandleStopButton" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
 </p>
 
 <PositionList Positions="@activity.Positions.ToArray()" />
@@ -23,6 +25,10 @@
 @code {
 	[Parameter]
 	public string ActivityId { get; set; }
+
+	private Timer timer;
+	private const int timerInterval = 3000;
+	void IDisposable.Dispose() => timer?.Dispose();
 
 	private bool started = false;
 	private bool startButtonDisabled => started;
@@ -62,7 +68,7 @@
 
 	private async Task HandleAddCurrentGpsPosition()
 	{
-		//TODO: replace Void with the return type of this jsvascript function
+		//TODO: try replacing Void with the return type of this javascript function
 		await JSRuntime.InvokeVoidAsync("getPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
 	}
 
@@ -85,12 +91,43 @@
 		}
 	}
 
+	private void HandleStartButton()
+	{
+		if (timer == null)
+			InitializeTimer();
+
+		started = true;
+		timer.Start();
+		Console.WriteLine("Timer started (View Activity).");
+	}
+
+	private void HandleStopButton()
+	{
+		started = false;
+		timer.Stop();
+		Console.WriteLine("Timer stopped (View Activity).");
+	}
+
+	private void InitializeTimer()
+	{
+		timer = new Timer(timerInterval);
+		timer.Elapsed += TimerElapsedHandler;
+		Console.WriteLine("Timer initialized (View Activity).");
+	}
+
+	private async void TimerElapsedHandler(object source, ElapsedEventArgs args)
+	{
+		await JSRuntime.InvokeVoidAsync("getPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
+	}
+
+	// Not used right now
 	private async Task HandleStartWatchGpsPosition()
 	{
 		started = true;
 		await JSRuntime.InvokeVoidAsync("startWatchPosition", "LiteBulb.RunLog.Web", "GetPositionCallback");
 	}
 
+	// Not used right now
 	private async Task HandleStopWatchGpsPosition()
 	{
 		started = false;
