@@ -211,6 +211,7 @@ namespace LiteBulb.RunLog.Api.Controllers
 		{
 			_logger.LogInformation($"DeleteActivityById() method start with Activity id '{id}'.");
 
+			// Delete Activity object from the database
 			var removeByIdResponse = _activityService.RemoveById(id);
 
 			if (removeByIdResponse.HasErrors)

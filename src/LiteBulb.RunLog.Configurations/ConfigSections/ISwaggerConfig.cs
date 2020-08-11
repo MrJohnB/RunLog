@@ -9,10 +9,10 @@ namespace LiteBulb.RunLog.Configurations.ConfigSections
 		/// <summary>
 		/// Swagger Info class property accessor.
 		/// </summary>
-		//public Info Info { get; set; }
+		//Info Info { get; set; }
 
-		public string Title { get; set; }
-		public string Description { get; set; }
-		public string Version { get; set; }
+		string Title { get; set; }
+		string Description { get; set; }
+		string Version { get; set; }
 	}
 }

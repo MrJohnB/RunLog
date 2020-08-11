@@ -23,7 +23,7 @@ using Microsoft.OpenApi.Models;
 namespace LiteBulb.RunLog.Api
 {
 	/// <summary>
-	/// Startup class method for GuitarTuner API.
+	/// Startup class method for RunLog API.
 	/// </summary>
 	public class Startup
 	{
