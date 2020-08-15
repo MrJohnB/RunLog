@@ -61,8 +61,9 @@ namespace LiteBulb.RunLog.Models
 		/// Note: this is an optimization property so we don't have to map Position children to each Activity,
 		/// but we can still display the count.  This will be used when retrieving a list of Activities,
 		/// but not when getting a single Activity.
+		/// TODO: fix this later with ViewModel.
 		/// </summary>
-		public int PositionCount { get; set; }
+		public int? PositionCount { get; set; }
 
 		public Activity()
 		{
@@ -76,7 +77,7 @@ namespace LiteBulb.RunLog.Models
 			Description = string.Empty;
 			Units = DistanceUnits.Undefined;
 			Positions = new List<Position>();
-			PositionCount = int.MinValue;
+			PositionCount = null;
 		}
 	}
 }
