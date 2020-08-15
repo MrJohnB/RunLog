@@ -35,6 +35,7 @@ namespace LiteBulb.RunLog.Repositories.Activities
 
 			var positions = activity.Positions;
 			activity.Positions = new List<Position>();
+			activity.PositionCount = null;
 
 			var insertedActivity = Collection.Insert(activity);
 			var insertedPositions = new List<Position>();
