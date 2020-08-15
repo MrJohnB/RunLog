@@ -196,6 +196,7 @@ namespace LiteBulb.RunLog.Repositories.Activities
 				return null;
 
 			MapPositionChildren(activity);
+			activity.PositionCount = activity.Positions.Count;
 
 			return activity;
 		}
