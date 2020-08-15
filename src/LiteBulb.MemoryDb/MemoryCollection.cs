@@ -97,7 +97,7 @@ namespace LiteBulb.MemoryDb
 
 			lock (syncLock)
 			{
-				_items.Values.Count(filter);
+				count = _items.Values.Count(filter);
 			}
 
 			return count;

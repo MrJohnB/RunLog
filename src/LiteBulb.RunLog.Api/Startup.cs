@@ -91,6 +91,8 @@ namespace LiteBulb.RunLog.Api
 			//		});
 			//});
 
+			//TODO: services.AddResponseCaching();
+
 			// Add Json settings
 			//services.AddControllers();
 			services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false) // ASP.NET Core 3.0 bug: https://stackoverflow.com/questions/59288259/asp-net-core-3-0-createdataction-returns-no-route-matches-the-supplied-values
