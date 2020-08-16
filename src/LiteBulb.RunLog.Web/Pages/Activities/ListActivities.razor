@@ -41,7 +41,7 @@ else
 					<td>@activity.Status.ToString()</td>
 					<td>@activity.Description</td>
 					<td>@activity.Units</td>
-					<td>@activity.PositionCount</td>
+					<td>@activity?.PositionCount</td>
 					<td>@activity.StartedAt</td>
 					<td>@activity.CompletedAt</td>
 					<td><a class="btn btn-primary" href="/activities/@activity.Id">View</a></td>
