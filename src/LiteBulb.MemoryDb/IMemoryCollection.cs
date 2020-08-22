@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LiteBulb.MemoryDb.Enumerations;
+using System;
 using System.Collections.Generic;
 
 namespace LiteBulb.MemoryDb
@@ -29,8 +30,9 @@ namespace LiteBulb.MemoryDb
 		/// <summary>
 		/// Get full list of documents currently in the collection.
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
 		/// <returns>Collection of documents</returns>
-		IEnumerable<TDocument> FindAll();
+		IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending);
 
 		/// <summary>
 		/// Find a document in the collection by id.
@@ -43,8 +45,9 @@ namespace LiteBulb.MemoryDb
 		/// Find one or more documents in the collection with a search filter.
 		/// </summary>
 		/// <param name="filter">Filter to use to search collection</param>
+		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
 		/// <returns>Collection of documents matching the given search terms</returns>
-		IEnumerable<TDocument> FindMany(Func<TDocument, bool> filter);
+		IEnumerable<TDocument> FindMany(Func<TDocument, bool> filter, SortDirection sortDirection = SortDirection.Ascending);
 
 		/// <summary>
 		/// Insert a new document into the collection.
@@ -94,5 +97,12 @@ namespace LiteBulb.MemoryDb
 		/// <param name="filter">The filter to search for documents to delete</param>
 		/// <returns>Count of documents that were deleted (matched the search filter)</returns>
 		int DeleteMany(Func<TDocument, bool> filter);
+
+		/// <summary>
+		/// Returns a queryable source of documents.
+		/// TODO: implement here, or put this in an extension method?
+		/// </summary>
+		/// <returns>A queryable source of documents</returns>
+		//System.Linq.IQueryable<TDocument> AsQueryable();
 	}
 }

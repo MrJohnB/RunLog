@@ -1,4 +1,5 @@
 ﻿using LiteBulb.MemoryDb;
+using LiteBulb.MemoryDb.Enumerations;
 using LiteBulb.RunLog.Models;
 using System;
 using System.Collections.Generic;
@@ -168,14 +169,15 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// Returns all Activity objects along with the count of Position objects that belong to them.
 		/// Note: does not map Position child collection to parent Activity.
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (decending by default)</param>
 		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
-		public override IEnumerable<Activity> GetAll()
+		public override IEnumerable<Activity> GetAll(SortDirection sortDirection = SortDirection.Descending)
 		{
 			//TODO: make paged
 
-			var activities = Collection.FindAll();
+			var activities = base.GetAll(sortDirection);
 
-			if (activities == null)
+			if (activities == null) //TODO: this should never occur
 				return null;
 
 			foreach (var activity in activities)
@@ -205,12 +207,13 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// <summary>
 		/// Returns all Activity objects along with the Position objects that belong to them.
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (decending by default)</param>
 		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
-		public IEnumerable<Activity> GetAllMapped()
+		public IEnumerable<Activity> GetAllMapped(SortDirection sortDirection = SortDirection.Descending)
 		{
-			var activities = Collection.FindAll().ToArray(); //TODO: why ToArray() needed?
+			var activities = base.GetAll(sortDirection).ToArray(); //TODO: why ToArray() needed?
 
-			if (activities == null)
+			if (activities == null) //TODO: this should never occur
 				return null;
 
 			foreach (var activity in activities)
@@ -225,10 +228,11 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// <summary>
 		/// Find the Position objects that belong to the Activity and map them to child collection.
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (decending by default)</param>
 		/// <param name="activity">The Activity object to map Position objects to</param>
-		private void MapPositionChildren(Activity activity)
+		private void MapPositionChildren(Activity activity, SortDirection sortDirection = SortDirection.Descending)
 		{
-			var positions = _positionCollection.FindMany(x => x.ActivityId == activity.Id);
+			var positions = _positionCollection.FindMany(x => x.ActivityId == activity.Id, sortDirection);
 			activity.Positions.AddRange(positions);
 		}
 	}

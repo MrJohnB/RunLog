@@ -30,7 +30,7 @@ namespace LiteBulb.RunLog.Services.Activities
 		{
 			var result = _repository.GetAll();
 
-			if (result == null)
+			if (result == null) //TODO: this should never occur
 			{
 				return new ServiceResponse<IEnumerable<Position>>(true,
 					"Error occurred while retrieving paged list of Position objects.  Result was null for some reason.");

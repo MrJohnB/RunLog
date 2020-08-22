@@ -92,7 +92,7 @@
 
 		Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
 
-		activity.Positions.Add(createdPosition);
+		activity.Positions.Insert(0, createdPosition);
 		stateHasChanged();
 	}
 

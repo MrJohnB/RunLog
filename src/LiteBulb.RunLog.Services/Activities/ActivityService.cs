@@ -31,7 +31,7 @@ namespace LiteBulb.RunLog.Services.Activities
 		{
 			var result = _repository.GetAll(); // GetAllMapped()
 
-			if (result == null)
+			if (result == null) //TODO: this should never occur
 			{
 				return new ServiceResponse<IEnumerable<Activity>>(true,
 					"Error occurred while retrieving paged list of Activity objects.  Result was null for some reason.");

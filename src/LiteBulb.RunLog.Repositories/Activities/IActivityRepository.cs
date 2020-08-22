@@ -1,4 +1,5 @@
-﻿using LiteBulb.Repositories;
+﻿using LiteBulb.MemoryDb.Enumerations;
+using LiteBulb.Repositories;
 using LiteBulb.RunLog.Models;
 using System.Collections.Generic;
 
@@ -22,7 +23,8 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// <summary>
 		/// Returns all Activity objects along with the Position objects that belong to them.
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (decending by default)</param>
 		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
-		IEnumerable<Activity> GetAllMapped();
+		IEnumerable<Activity> GetAllMapped(SortDirection sortDirection = SortDirection.Descending);
 	}
 }

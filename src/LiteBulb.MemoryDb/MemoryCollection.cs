@@ -1,4 +1,5 @@
 ﻿using LiteBulb.Common.DataModel;
+using LiteBulb.MemoryDb.Enumerations;
 using LiteBulb.MemoryDb.Extensions;
 using System;
 using System.Collections.Generic;
@@ -105,15 +106,19 @@ namespace LiteBulb.MemoryDb
 
 		/// <summary>
 		/// Get full list of documents currently in the collection.
+		/// TODO: Not really necessary, just use other method i.e. Find(filter = null) ?
 		/// </summary>
+		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
 		/// <returns>Collection of documents</returns>
-		public IEnumerable<TDocument> FindAll() // Not really necessary, just use Find(filter = null) ?
+		public IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending)
 		{
 			var foundItems = new List<TDocument>();
 
 			lock (syncLock)
 			{
-				foreach (var item in _items.Values)
+				var items = sortDirection == SortDirection.Ascending ? _items.Values : _items.Values.Reverse();
+
+				foreach (var item in items)
 					foundItems.Add(item.CloneJson());
 			}
 
@@ -137,8 +142,8 @@ namespace LiteBulb.MemoryDb
 
 			lock (syncLock)
 			{
-				var value = _items.GetValueOrDefault(id); // will be default(TDocument) if key not found
-				foundItem = value.CloneJson();
+				var item = _items.GetValueOrDefault(id); // will be default(TDocument) if key not found
+				foundItem = item.CloneJson();
 			}
 
 			return foundItem; 
@@ -146,10 +151,12 @@ namespace LiteBulb.MemoryDb
 
 		/// <summary>
 		/// Find one or more documents in the collection with a search filter.
+		/// https://stackoverflow.com/questions/44761385/how-to-pass-a-predicate-as-parameter-c-sharp
 		/// </summary>
 		/// <param name="filter">Filter to use to search collection</param>
+		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
 		/// <returns>Collection of documents matching the given search terms</returns>
-		public IEnumerable<TDocument> FindMany(Func<TDocument, bool> filter) // https://stackoverflow.com/questions/44761385/how-to-pass-a-predicate-as-parameter-c-sharp
+		public IEnumerable<TDocument> FindMany(Func<TDocument, bool> filter, SortDirection sortDirection = SortDirection.Ascending)
 		{
 			if (filter == null)
 				throw new ArgumentNullException();
@@ -158,7 +165,9 @@ namespace LiteBulb.MemoryDb
 
 			lock (syncLock)
 			{
-				foreach (var item in _items.Values.Where(filter))
+				var items = sortDirection == SortDirection.Ascending ? _items.Values : _items.Values.Reverse();
+
+				foreach (var item in items.Where(filter))
 					foundItems.Add(item.CloneJson());
 			}
 
