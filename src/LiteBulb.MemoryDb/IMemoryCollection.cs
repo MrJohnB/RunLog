@@ -31,8 +31,10 @@ namespace LiteBulb.MemoryDb
 		/// Get full list of documents currently in the collection.
 		/// </summary>
 		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
+		/// <param name="offset">(optional: omit if default values are acceptable)</param>
+		/// <param name="limit">(optional: omit if default values are acceptable)</param>
 		/// <returns>Collection of documents</returns>
-		IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending);
+		IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending, int offset = 0, int limit = int.MaxValue);
 
 		/// <summary>
 		/// Find a document in the collection by id.

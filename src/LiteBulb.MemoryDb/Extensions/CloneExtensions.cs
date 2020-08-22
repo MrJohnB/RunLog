@@ -3,6 +3,10 @@ using System;
 
 namespace LiteBulb.MemoryDb.Extensions
 {
+    /// <summary>
+    /// Extension methods used to clone an object to return as the query response.
+    /// So a reference to the object in the database is not passed back (since this is an in-memory database).
+    /// </summary>
 	public static class CloneExtensions
 	{
         /// <summary>

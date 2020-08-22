@@ -109,17 +109,29 @@ namespace LiteBulb.MemoryDb
 		/// TODO: Not really necessary, just use other method i.e. Find(filter = null) ?
 		/// </summary>
 		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
+		/// <param name="offset">(optional: omit if default values are acceptable)</param>
+		/// <param name="limit">(optional: omit if default values are acceptable)</param>
 		/// <returns>Collection of documents</returns>
-		public IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending)
+		public IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending, int offset = 0, int limit = int.MaxValue)
 		{
 			var foundItems = new List<TDocument>();
+			int index = 0;
 
 			lock (syncLock)
 			{
 				var items = sortDirection == SortDirection.Ascending ? _items.Values : _items.Values.Reverse();
+				//items = items.Skip(offset).Take(limit);
 
 				foreach (var item in items)
+				{
+					if (index++ < offset)
+						continue;
+
 					foundItems.Add(item.CloneJson());
+
+					if (foundItems.Count >= limit)
+						break;
+				}
 			}
 
 			return foundItems;

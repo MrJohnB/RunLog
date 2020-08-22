@@ -173,8 +173,6 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		/// <returns>Collection of Activity objects with their corresponding mapped Position objects</returns>
 		public override IEnumerable<Activity> GetAll(SortDirection sortDirection = SortDirection.Descending)
 		{
-			//TODO: make paged
-
 			var activities = base.GetAll(sortDirection);
 
 			if (activities == null) //TODO: this should never occur
