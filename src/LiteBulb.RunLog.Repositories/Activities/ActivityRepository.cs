@@ -1,4 +1,5 @@
-﻿using LiteBulb.MemoryDb;
+﻿using LiteBulb.Common.DataModel;
+using LiteBulb.MemoryDb;
 using LiteBulb.MemoryDb.Enumerations;
 using LiteBulb.RunLog.Models;
 using System;
@@ -182,6 +183,25 @@ namespace LiteBulb.RunLog.Repositories.Activities
 				activity.PositionCount = _positionCollection.Count(x => x.ActivityId == activity.Id);
 
 			return activities;
+		}
+
+		/// <summary>
+		/// Get paged list of Activity objects from the RunLog database collection.
+		/// </summary>
+		/// <param name="offset">(optional: omit if default values are acceptable)</param>
+		/// <param name="limit">(optional: omit if default values are acceptable)</param>
+		/// <returns>Paged collection of Activity objects from the RunLog database collection</returns>
+		public override IPagedResult<Activity> GetPagedList(int offset = 0, int limit = 50)
+		{
+			var pagedResult = base.GetPagedList(offset, limit);
+
+			if (pagedResult == null || pagedResult.Data == null) //TODO: this should never occur
+				return null;
+
+			foreach (var activity in pagedResult.Data)
+				activity.PositionCount = _positionCollection.Count(x => x.ActivityId == activity.Id);
+
+			return pagedResult;
 		}
 
 		/// <summary>
