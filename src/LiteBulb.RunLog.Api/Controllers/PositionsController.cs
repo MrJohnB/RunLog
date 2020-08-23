@@ -2,7 +2,6 @@
 using LiteBulb.RunLog.Services.Activities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,35 +35,44 @@ namespace LiteBulb.RunLog.Api.Controllers
 		}
 
 		/// <summary>
-		/// A list of Position objects.
+		/// A PAGED list of Position objects.
 		/// </summary>
-		/// <returns>Collection of Position objects that have been submitted to the service</returns>
+		/// <param name="offset">Number of Position objects to skip before retrieving list. Default is 0. (Optional: omit if default values are acceptable)</param>
+		/// <param name="limit">Number of Position objects to take when retrieving list. Default is 50 and max is 50. (Optional: omit if default values are acceptable)</param>
+		/// <returns>Paged collection of Position objects that have been submitted to the service</returns>
 		// GET api/v1/positions
-		[HttpGet()]
-		public async Task<IActionResult> GetPositionsAsync()
+		[HttpGet("{offset:int},{limit:int}")]
+		public async Task<IActionResult> GetPositionsAsync([FromRoute] int? offset, [FromRoute] int? limit)
 		{
 			_logger.LogInformation("GetPositionsAsync() method start.");
 
-			// Get list of Position objects in the system
-			var getListResponse = await Task.FromResult(_positionService.GetList());
+			int offsetIndex = 0; // Default index
+			int limitSize = 50; // Default size limit
 
-			if (getListResponse.HasErrors)
+			if (offset != null && offset.HasValue && offset.Value > 0)
+				offsetIndex = offset.Value;
+
+			if (limit != null && limit.HasValue && limit.Value < 50)
+				limitSize = limit.Value;
+
+			// Get list of Position objects in the system
+			var getPagedListResponse = await Task.FromResult(_positionService.GetPagedList(offsetIndex, limitSize));
+
+			if (getPagedListResponse.HasErrors)
 			{
-				var message = $"Error in GetPositionsAsync() method.  Position list cannot be displayed.  Error message returned from PositionService: {getListResponse.ErrorMessage}";
+				var message = $"Error in GetPositionsAsync() method.  Position list cannot be displayed.  Error message returned from PositionService: {getPagedListResponse.ErrorMessage}";
 				_logger.LogError(message);
-				return NotFound(getListResponse.ErrorMessage);
+				return NotFound(getPagedListResponse.ErrorMessage);
 			}
 
-			var models = getListResponse.Result;
+			var pagedResult = getPagedListResponse.Result;
 
-			//if (!models.Any())
-			//	return NoContent();
-
-			//TODO: map to DTO
+			//if (!pagedResult.Data.Any() && pagedResult.Total <= 0)
+			//	return NoContent(); // NotFound($"Position list is empty and total record count is '{pagedResult.Total}'.");
 
 			_logger.LogInformation("GetPositionsAsync() method end.");
 
-			return Ok(models);
+			return Ok(pagedResult);
 		}
 
 		/// <summary>

@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @inject ApiSettings Settings
 @using System.Timers
+@using LiteBulb.Common.DataModel
 @using LiteBulb.RunLog.Models
 
 <h3>Activities</h3>
@@ -54,11 +55,12 @@ else
 }
 
 @code {
-	private Activity[] activities;
-	
+	private IReadOnlyCollection<Activity> activities;
+
 	private Timer timer;
 	private const int timerInterval = 3000;
 	void IDisposable.Dispose() => timer?.Dispose();
+	private const string offsetLimitQueryVariables = "/0,10";
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -68,7 +70,11 @@ else
 		StartTimer();
 	}
 
-	private async Task<Activity[]> GetActivities() => await Http.GetFromJsonAsync<Activity[]>(Settings.ActivitiesRequestUri);
+	private async Task<IReadOnlyCollection<Activity>> GetActivities()
+	{
+		var pagedResult = await Http.GetFromJsonAsync<PagedResult<Activity>>(Settings.ActivitiesRequestUri + offsetLimitQueryVariables);
+		return pagedResult.Data;
+	}
 
 	//TODO: get rid of timer
 	private void StartTimer()

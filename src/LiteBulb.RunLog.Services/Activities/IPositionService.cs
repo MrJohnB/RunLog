@@ -1,4 +1,5 @@
-﻿using LiteBulb.RunLog.Models;
+﻿using LiteBulb.Common.DataModel;
+using LiteBulb.RunLog.Models;
 using LiteBulb.RunLog.Services.Responses;
 using System.Collections.Generic;
 
@@ -9,6 +10,14 @@ namespace LiteBulb.RunLog.Services.Activities
 	/// </summary>
 	public interface IPositionService
 	{
+		/// <summary>
+		/// Get paged list of Position objects from the database.
+		/// </summary>
+		/// <param name="offset">(optional: omit if default values are acceptable)</param>
+		/// <param name="limit">(optional: omit if default values are acceptable)</param>
+		/// <returns>Paged collection of Position objects from the database collection</returns>
+		ServiceResponse<IPagedResult<Position>> GetPagedList(int offset = 0, int limit = 50);
+
 		/// <summary>
 		/// Get list of objects (entities or documents) from the Position collection.
 		/// </summary>

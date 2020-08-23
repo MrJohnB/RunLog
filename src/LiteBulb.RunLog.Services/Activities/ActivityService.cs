@@ -1,4 +1,5 @@
-﻿using LiteBulb.RunLog.Models;
+﻿using LiteBulb.Common.DataModel;
+using LiteBulb.RunLog.Models;
 using LiteBulb.RunLog.Repositories.Activities;
 using LiteBulb.RunLog.Services.Responses;
 using System;
@@ -20,6 +21,31 @@ namespace LiteBulb.RunLog.Services.Activities
 		public ActivityService(IActivityRepository repository)
 		{
 			_repository = repository;
+		}
+
+		/// <summary>
+		/// Get paged list of Activity objects from the database.
+		/// </summary>
+		/// <param name="offset">(optional: omit if default values are acceptable)</param>
+		/// <param name="limit">(optional: omit if default values are acceptable)</param>
+		/// <returns>Paged collection of Activity objects from the database collection</returns>
+		public ServiceResponse<IPagedResult<Activity>> GetPagedList(int offset = 0, int limit = 50)
+		{
+			var pagedResult = _repository.GetPagedList(offset, limit);
+
+			if (pagedResult == null)
+			{
+				return new ServiceResponse<IPagedResult<Activity>>(true,
+					$"Error occurred while retrieving paged list of {nameof(Activity)} objects.  PagedResult was null for some reason.");
+			}
+
+			if (pagedResult.Data == null)
+			{
+				return new ServiceResponse<IPagedResult<Activity>>(true,
+					$"Error occurred while retrieving paged list of {nameof(Activity)} objects.  PagedResult.{nameof(pagedResult.Data)} was null for some reason.");
+			}
+
+			return new ServiceResponse<IPagedResult<Activity>>(pagedResult);
 		}
 
 		/// <summary>

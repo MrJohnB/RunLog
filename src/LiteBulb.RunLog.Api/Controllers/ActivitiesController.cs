@@ -35,35 +35,44 @@ namespace LiteBulb.RunLog.Api.Controllers
 		}
 
 		/// <summary>
-		/// A list of Activity objects.
+		/// A PAGED list of Activity objects.
 		/// </summary>
-		/// <returns>Collection of Activity objects that have been submitted to the service</returns>
+		/// <param name="offset">Number of Activity objects to skip before retrieving list. Default is 0. (Optional: omit if default values are acceptable)</param>
+		/// <param name="limit">Number of Activity objects to take when retrieving list. Default is 50 and max is 50. (Optional: omit if default values are acceptable)</param>
+		/// <returns>Paged collection of Activity objects that have been submitted to the service</returns>
 		// GET api/v1/activities
-		[HttpGet()]
-		public async Task<IActionResult> GetActivitiesAsync()
+		[HttpGet("{offset:int},{limit:int}")]
+		public async Task<IActionResult> GetActivitiesAsync([FromRoute] int? offset, [FromRoute] int? limit)
 		{
 			_logger.LogInformation("GetActivitiesAsync() method start.");
 
-			// Get list of Activity objects in the system
-			var getListResponse = await Task.FromResult(_activityService.GetList());
+			int offsetIndex = 0; // Default index
+			int limitSize = 50; // Default size limit
 
-			if (getListResponse.HasErrors)
+			if (offset != null && offset.HasValue && offset.Value > 0)
+				offsetIndex = offset.Value;
+
+			if (limit != null && limit.HasValue && limit.Value < 50)
+				limitSize = limit.Value;
+
+			// Get list of Activity objects in the system
+			var getPagedListResponse = await Task.FromResult(_activityService.GetPagedList(offsetIndex, limitSize));
+
+			if (getPagedListResponse.HasErrors)
 			{
-				var message = $"Error in GetActivitiesAsync() method.  Activity list cannot be displayed.  Error message returned from ActivityService: {getListResponse.ErrorMessage}";
+				var message = $"Error in GetActivitiesAsync() method.  Activity list cannot be displayed.  Error message returned from ActivityService: {getPagedListResponse.ErrorMessage}";
 				_logger.LogError(message);
-				return NotFound(getListResponse.ErrorMessage);
+				return NotFound(getPagedListResponse.ErrorMessage);
 			}
 
-			var models = getListResponse.Result;
+			var pagedResult = getPagedListResponse.Result;
 
-			//if (!models.Any())
-			//	return NoContent();
-
-			//TODO: map to DTO
+			//if (!pagedResult.Data.Any() && pagedResult.Total <= 0)
+			//	return NoContent(); // NotFound($"Activity list is empty and total record count is '{pagedResult.Total}'.");
 
 			_logger.LogInformation("GetActivitiesAsync() method end.");
 
-			return Ok(models);
+			return Ok(pagedResult);
 		}
 
 		/// <summary>

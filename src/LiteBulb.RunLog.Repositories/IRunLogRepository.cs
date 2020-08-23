@@ -27,7 +27,7 @@ namespace LiteBulb.RunLog.Repositories
 		/// </summary>
 		/// <param name="offset">(optional: omit if default values are acceptable)</param>
 		/// <param name="limit">(optional: omit if default values are acceptable)</param>
-		/// <returns>Paged collection of the RunLog database collection</returns>
+		/// <returns>Paged collection of objects from the RunLog database collection</returns>
 		IPagedResult<TModel> GetPagedList(int offset = 0, int limit = 50);
 	}
 }

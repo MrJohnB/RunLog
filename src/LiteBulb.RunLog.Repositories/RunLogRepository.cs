@@ -52,7 +52,7 @@ namespace LiteBulb.RunLog.Repositories
 		/// </summary>
 		/// <param name="offset">(optional: omit if default values are acceptable)</param>
 		/// <param name="limit">(optional: omit if default values are acceptable)</param>
-		/// <returns>Paged collection of the RunLog database collection</returns>
+		/// <returns>Paged collection of objects from the RunLog database collection</returns>
 		public virtual IPagedResult<TModel> GetPagedList(int offset = 0, int limit = 50)
 		{
 			// Get total record/object count
@@ -60,6 +60,7 @@ namespace LiteBulb.RunLog.Repositories
 
 			var models = Collection.FindAll(SortDirection.Descending, offset, limit); //TODO: could this return null?
 
+			//TODO: is this necessary?
 			if (!models.Any())
 			{
 				return new PagedResult<TModel>()
@@ -71,7 +72,7 @@ namespace LiteBulb.RunLog.Repositories
 
 			return new PagedResult<TModel>()
 			{
-				Data = (TModel[])models,
+				Data = models,
 				Total = totalRecordCount
 			};
 		}

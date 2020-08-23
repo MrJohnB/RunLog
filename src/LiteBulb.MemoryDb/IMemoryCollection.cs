@@ -34,7 +34,7 @@ namespace LiteBulb.MemoryDb
 		/// <param name="offset">(optional: omit if default values are acceptable)</param>
 		/// <param name="limit">(optional: omit if default values are acceptable)</param>
 		/// <returns>Collection of documents</returns>
-		IEnumerable<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending, int offset = 0, int limit = int.MaxValue);
+		IReadOnlyCollection<TDocument> FindAll(SortDirection sortDirection = SortDirection.Ascending, int offset = 0, int limit = int.MaxValue);
 
 		/// <summary>
 		/// Find a document in the collection by id.
@@ -49,7 +49,7 @@ namespace LiteBulb.MemoryDb
 		/// <param name="filter">Filter to use to search collection</param>
 		/// <param name="sortDirection">Specifies the sort order (ascending by default)</param>
 		/// <returns>Collection of documents matching the given search terms</returns>
-		IEnumerable<TDocument> FindMany(Func<TDocument, bool> filter, SortDirection sortDirection = SortDirection.Ascending);
+		IReadOnlyCollection<TDocument> FindMany(Func<TDocument, bool> filter, SortDirection sortDirection = SortDirection.Ascending);
 
 		/// <summary>
 		/// Insert a new document into the collection.
@@ -78,7 +78,7 @@ namespace LiteBulb.MemoryDb
 		/// <param name="filter">The filter to search for documents to update</param>
 		/// <param name="document">Document with values to update all filtered items with (all documents that match the search term will be update with the same values)</param>
 		/// <returns>Collection of one or more documents that were updated with each document Id</returns>
-		IEnumerable<TDocument> UpdateMany(Func<TDocument, bool> filter, TDocument document);
+		IReadOnlyCollection<TDocument> UpdateMany(Func<TDocument, bool> filter, TDocument document);
 
 		/// <summary>
 		/// Delete all documents in the collection.
