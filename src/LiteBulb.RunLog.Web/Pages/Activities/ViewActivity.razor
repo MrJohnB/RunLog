@@ -18,7 +18,7 @@
 	<button type="button" @onclick="HandleStopButton" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
 </p>
 
-<PositionList Positions="@activity.Positions.ToArray()" />
+<PositionList Positions="@GetPositionsPage()" />
 
 <button type="button" @onclick="HandleBack" class="btn btn-primary">Back</button>
 
@@ -39,6 +39,23 @@
 	private static Activity activity = new Activity();
 	private static HttpClient http;
 	private static ApiSettings settings;
+
+	private IEnumerable<Position> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
+	{
+		int index = 0;
+		int count = 0;
+
+		foreach (var position in activity.Positions)
+		{
+			if (count++ >= pageSize)
+				break;
+
+			if (index++ < pageIndex)
+				continue;
+
+			yield return position;
+		}
+	}
 
 	protected override async Task OnInitializedAsync()
 	{

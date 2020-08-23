@@ -1,8 +1,9 @@
 ﻿@page "/activities/positions"
 @inject HttpClient Http
 @inject ApiSettings Settings
-@using LiteBulb.RunLog.Web.Shared 
+@using LiteBulb.RunLog.Web.Shared
 @using System.Timers
+@using LiteBulb.Common.DataModel
 @using LiteBulb.RunLog.Models
 
 <h3>Positions</h3>
@@ -11,7 +12,7 @@
 <PositionList Positions="@positions" />
 
 @code {
-	private Position[] positions;
+	private IReadOnlyCollection<Position> positions;
 	private Timer timer;
 
 	protected override async Task OnInitializedAsync()
@@ -21,7 +22,11 @@
 		StartTimer();
 	}
 
-	private async Task<Position[]> GetPositions() => await Http.GetFromJsonAsync<Position[]>(Settings.PositionsRequestUri);
+	private async Task<IReadOnlyCollection<Position>> GetPositions(int offset = 0, int limit = 20)
+	{
+		var pagedResult = await Http.GetFromJsonAsync<PagedResult<Position>>(Settings.PositionsRequestUri + $"/{offset},{limit}");
+		return pagedResult.Data;
+	}
 
 	private void StartTimer()
 	{
