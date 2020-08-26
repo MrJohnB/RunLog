@@ -1,4 +1,4 @@
-﻿@using LiteBulb.RunLog.Models
+﻿@using LiteBulb.RunLog.Dtos
 
 <div class="form-group">
 	<label for="activityId">Activity Id</label>
@@ -39,7 +39,7 @@
 
 @code {
 	[Parameter]
-	public Position Position { get; set; }
+	public PositionDto Position { get; set; }
 
 	[Parameter]
 	public bool ReadOnly { get; set; }

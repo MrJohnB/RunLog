@@ -1,7 +1,7 @@
 ﻿@page "/activities/{ActivityId}/positions/{PositionId}"
 @inject HttpClient Http
 @inject ApiSettings Settings
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 
 <h3>View Position</h3>
 <p>Position details</p>
@@ -23,11 +23,11 @@
 	[Parameter]
 	public string PositionId { get; set; }
 
-	private Position position = new Position();
+	private PositionDto position = new PositionDto();
 
 	protected override async Task OnInitializedAsync()
 	{
-		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
+		position = await Http.GetFromJsonAsync<PositionDto>($"{Settings.PositionsRequestUri}/{PositionId}");
 
 		//TODO: check for 404 status code
 

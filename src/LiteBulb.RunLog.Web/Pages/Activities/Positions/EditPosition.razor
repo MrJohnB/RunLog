@@ -2,7 +2,7 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject ApiSettings Settings
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 
 <h3>Edit Position</h3>
 <p>Use the form below to edit this position</p>
@@ -28,13 +28,13 @@
 	[Parameter]
 	public string PositionId { get; set; }
 
-	private Position position = new Position();
+	private PositionDto position = new PositionDto();
 
 	protected override async Task OnInitializedAsync()
 	{
 		//TODO: Check to see if ActivityId is valid and exists in the database
 
-		position = await Http.GetFromJsonAsync<Position>($"{Settings.PositionsRequestUri}/{PositionId}");
+		position = await Http.GetFromJsonAsync<PositionDto>($"{Settings.PositionsRequestUri}/{PositionId}");
 
 		if (position == null)
 		{

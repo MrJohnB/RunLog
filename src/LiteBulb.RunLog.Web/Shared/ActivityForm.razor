@@ -1,4 +1,4 @@
-﻿@using LiteBulb.RunLog.Models
+﻿@using LiteBulb.RunLog.Dtos
 @using LiteBulb.RunLog.Models.Enumerations
 
 <div class="form-group">
@@ -52,7 +52,7 @@
 
 @code {
 	[Parameter]
-	public Activity Activity { get; set; }
+	public ActivityDto Activity { get; set; }
 
 	[Parameter]
 	public bool ReadOnly { get; set; }

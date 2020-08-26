@@ -4,7 +4,7 @@
 @using LiteBulb.RunLog.Web.Shared
 @using System.Timers
 @using LiteBulb.Common.DataModel
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 
 <h3>Positions</h3>
 <p>A list of all positions in the system</p>
@@ -12,7 +12,7 @@
 <PositionList Positions="@positions" />
 
 @code {
-	private IReadOnlyCollection<Position> positions;
+	private IReadOnlyCollection<PositionDto> positions;
 	private Timer timer;
 
 	protected override async Task OnInitializedAsync()
@@ -22,9 +22,9 @@
 		StartTimer();
 	}
 
-	private async Task<IReadOnlyCollection<Position>> GetPositions(int offset = 0, int limit = 20)
+	private async Task<IReadOnlyCollection<PositionDto>> GetPositions(int offset = 0, int limit = 20)
 	{
-		var pagedResult = await Http.GetFromJsonAsync<PagedResult<Position>>(Settings.PositionsRequestUri + $"/{offset},{limit}");
+		var pagedResult = await Http.GetFromJsonAsync<PagedResult<PositionDto>>(Settings.PositionsRequestUri + $"/{offset},{limit}");
 		return pagedResult.Data;
 	}
 

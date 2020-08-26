@@ -3,7 +3,7 @@
 @inject NavigationManager Navigation
 @inject ApiSettings Settings
 @using LiteBulb.RunLog.Web.Shared 
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 
 <h3>Delete Activity</h3>
 <p>Are you sure you want to delete this activity?</p>
@@ -25,7 +25,7 @@
 	[Parameter]
 	public string ActivityId { get; set; }
 
-	private Activity activity = new Activity();
+	private ActivityDto activity = new ActivityDto();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -36,7 +36,7 @@
 			return;
 		}
 
-		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
+		activity = await Http.GetFromJsonAsync<ActivityDto>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
 
 		if (activity == null)
 		{

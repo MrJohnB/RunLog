@@ -5,7 +5,7 @@
 @inject ApiSettings Settings
 @inject IJSRuntime JSRuntime;
 @using System.Timers;
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 @using LiteBulb.RunLog.Web.ViewModels
 
 <h3>View Activity</h3>
@@ -36,11 +36,11 @@
 
 	// For JSInvokable static callback method
 	private static Action stateHasChanged;
-	private static Activity activity = new Activity();
+	private static ActivityDto activity = new ActivityDto();
 	private static HttpClient http;
 	private static ApiSettings settings;
 
-	private IEnumerable<Position> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
+	private IEnumerable<PositionDto> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
 	{
 		int index = 0;
 		int count = 0;
@@ -68,7 +68,7 @@
 			return;
 		}
 
-		activity = await Http.GetFromJsonAsync<Activity>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
+		activity = await Http.GetFromJsonAsync<ActivityDto>($"{Settings.ActivitiesRequestUri}/{ActivityId}");
 
 		if (activity == null)
 		{
@@ -94,10 +94,10 @@
 	[JSInvokable("GetPositionCallback")]
 	public static async Task PositionCallback(PositionViewModel positionViewModel)
 	{
-		Position position = positionViewModel;
-		position.ActivityId = activity.Id;
+		PositionDto position = positionViewModel;
+		position.ActivityId = activity.Id ??= 0; //TODO: throw exception?
 
-		var responseMessage = await http.PostAsJsonAsync<Position>(settings.PositionsRequestUri, position);
+		var responseMessage = await http.PostAsJsonAsync<PositionDto>(settings.PositionsRequestUri, position);
 
 		if (!responseMessage.IsSuccessStatusCode)
 		{
@@ -105,7 +105,7 @@
 			return;
 		}
 
-		var createdPosition = await responseMessage.Content.ReadFromJsonAsync<Position>();
+		var createdPosition = await responseMessage.Content.ReadFromJsonAsync<PositionDto>();
 
 		Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
 

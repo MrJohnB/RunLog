@@ -1,8 +1,11 @@
-﻿using LiteBulb.RunLog.Models;
+﻿using LiteBulb.RunLog.Dtos;
+using LiteBulb.RunLog.Dtos.Extensions;
 using LiteBulb.RunLog.Services.Activities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
+using LiteBulb.Common.DataModel;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -11,7 +14,6 @@ namespace LiteBulb.RunLog.Api.Controllers
 	/// <summary>
 	/// PositionsController controller class.
 	/// Note: Route Constraints (https://stackoverflow.com/questions/44694658/string-route-constraint)
-	/// TODO: Make DTO's for this?
 	/// </summary>
 	//[Route("api/[controller]")]
 	[Route("api/v1/positions")]
@@ -70,9 +72,18 @@ namespace LiteBulb.RunLog.Api.Controllers
 			//if (!pagedResult.Data.Any() && pagedResult.Total <= 0)
 			//	return NoContent(); // NotFound($"Position list is empty and total record count is '{pagedResult.Total}'.");
 
+			var models = pagedResult.Data;
+			var dtos = models.MapMany();
+
+			var pagedDto = new PagedResult<PositionDto>()
+			{
+				Data = (IReadOnlyCollection<PositionDto>)dtos,
+				Total = pagedResult.Total
+			};
+
 			_logger.LogInformation("GetPositionsAsync() method end.");
 
-			return Ok(pagedResult);
+			return Ok(pagedDto);
 		}
 
 		/// <summary>
@@ -100,12 +111,11 @@ namespace LiteBulb.RunLog.Api.Controllers
 			}
 
 			var model = getByIdResponse.Result;
-
-			//TODO: map to DTO
+			var dto = model.Map();
 
 			_logger.LogInformation($"GetPositionByIdAsync() method end with Position id '{id}'.");
 
-			return Ok(model);
+			return Ok(dto);
 		}
 
 		/// <summary>
@@ -120,12 +130,14 @@ namespace LiteBulb.RunLog.Api.Controllers
 		//[HttpPost("{position:Position}")]
 		//[HttpPost("{position}")]
 		[HttpPost()]
-		public async Task<IActionResult> CreatePositionAsync([FromBody] Position position)
+		public async Task<IActionResult> CreatePositionAsync([FromBody] PositionDto position)
 		{
 			_logger.LogInformation("CreatePositionAsync() method start.");
 
+			var model = position.Map();
+
 			// Add Position object to the database
-			var addResponse = await Task.FromResult(_positionService.Add(position));
+			var addResponse = await Task.FromResult(_positionService.Add(model));
 
 			if (addResponse.HasErrors)
 			{
@@ -142,20 +154,18 @@ namespace LiteBulb.RunLog.Api.Controllers
 			}
 
 			var addedObject = addResponse.Result;
-
-			//TODO: map to DTO
-
+			var dto = addedObject.Map();
 			var id = addedObject.Id;
 
 			_logger.LogInformation($"CreatePositionAsync() method end with Position id '{id}'.");
 
-			var result = CreatedAtAction(
+			var actionResult = CreatedAtAction(
 				actionName: nameof(GetPositionByIdAsync), // ASP.NET Core 3.0 bug: https://stackoverflow.com/questions/59288259/asp-net-core-3-0-createdataction-returns-no-route-matches-the-supplied-values
 				//controllerName: ControllerContext.ActionDescriptor.ControllerName,
 				routeValues: new { id },
-				value: addedObject);
+				value: dto);
 
-			return result;
+			return actionResult;
 		}
 
 		/// <summary>
@@ -167,7 +177,7 @@ namespace LiteBulb.RunLog.Api.Controllers
 		/// <returns>Updated Position object (full POCO)</returns>
 		/// PUT api/v1/positions/5
 		[HttpPut("{id:int}")]
-		public async Task<IActionResult> UpdatePositionAsync([FromRoute] int id, [FromBody] Position position)
+		public async Task<IActionResult> UpdatePositionAsync([FromRoute] int id, [FromBody] PositionDto position)
 		{
 			_logger.LogInformation("UpdatePositionAsync() method start.");
 
@@ -188,10 +198,10 @@ namespace LiteBulb.RunLog.Api.Controllers
 				return NotFound(getByIdResponse.ErrorMessage);
 			}
 
-			//TODO: map to update objcet
+			var model = position.Map();
 
 			// Update Position
-			var updateResponse = _positionService.Update(position);
+			var updateResponse = _positionService.Update(model);
 
 			if (updateResponse.HasErrors)
 			{
@@ -200,13 +210,11 @@ namespace LiteBulb.RunLog.Api.Controllers
 				return NotFound(updateResponse.ErrorMessage);
 			}
 
-			var updatedObject = updateResponse.Result;
-
-			//TODO: map to DTO
+			var dto = updateResponse.Result.Map();
 
 			_logger.LogInformation($"UpdatePositionAsync() method end with Position id '{id}'.");
 
-			return Ok(updatedObject);
+			return Ok(dto);
 		}
 
 		/// <summary>

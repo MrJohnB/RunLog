@@ -1,4 +1,4 @@
-﻿@using LiteBulb.RunLog.Models
+﻿@using LiteBulb.RunLog.Dtos
 
 @if (Positions == null)
 {
@@ -47,5 +47,5 @@ else
 
 @code {
 	[Parameter]
-	public IEnumerable<Position> Positions { get; set; }
+	public IEnumerable<PositionDto> Positions { get; set; }
 }

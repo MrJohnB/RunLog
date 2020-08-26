@@ -251,7 +251,9 @@ namespace LiteBulb.RunLog.Repositories.Activities
 		private void MapPositionChildren(Activity activity, SortDirection sortDirection = SortDirection.Descending)
 		{
 			var positions = _positionCollection.FindMany(x => x.ActivityId == activity.Id, sortDirection);
-			activity.Positions.AddRange(positions);
+
+			foreach (var position in positions)
+				activity.Positions.Add(position);
 		}
 	}
 }

@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LiteBulb.RunLog.Configurations\LiteBulb.RunLog.Configurations.csproj" />
+    <ProjectReference Include="..\LiteBulb.RunLog.Dtos\LiteBulb.RunLog.Dtos.csproj" />
     <ProjectReference Include="..\LiteBulb.RunLog.Services\LiteBulb.RunLog.Services.csproj" />
   </ItemGroup>
 

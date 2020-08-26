@@ -4,7 +4,7 @@
 @inject ApiSettings Settings
 @using System.Timers
 @using LiteBulb.Common.DataModel
-@using LiteBulb.RunLog.Models
+@using LiteBulb.RunLog.Dtos
 
 <h3>Activities</h3>
 <p>A list of all activities in the system</p>
@@ -55,7 +55,7 @@ else
 }
 
 @code {
-	private IReadOnlyCollection<Activity> activities;
+	private IReadOnlyCollection<ActivityDto> activities;
 
 	private Timer timer;
 	private const int timerInterval = 3000;
@@ -69,9 +69,9 @@ else
 		StartTimer();
 	}
 
-	private async Task<IReadOnlyCollection<Activity>> GetActivities(int offset = 0, int limit = 10)
+	private async Task<IReadOnlyCollection<ActivityDto>> GetActivities(int offset = 0, int limit = 10)
 	{
-		var pagedResult = await Http.GetFromJsonAsync<PagedResult<Activity>>(Settings.ActivitiesRequestUri + $"/{offset},{limit}");
+		var pagedResult = await Http.GetFromJsonAsync<PagedResult<ActivityDto>>(Settings.ActivitiesRequestUri + $"/{offset},{limit}");
 		return pagedResult.Data;
 	}
 
