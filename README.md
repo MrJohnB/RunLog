@@ -2,9 +2,10 @@
 
 # Demo
 
-[![RunLog Website](https://raw.githubusercontent.com/MrJohnB/RunLog/master/src/LiteBulb.RunLog.Web/wwwroot/runlog-logo.png)](https://runlogstorageaccount.z13.web.core.windows.net/)
+[![RunLog Logo](https://raw.githubusercontent.com/MrJohnB/RunLog/master/src/LiteBulb.RunLog.Web/wwwroot/runlog-logo.png)]
 
-[RunLog REST API](https://runlog.azurewebsites.net/index.html)
+- [RunLog Website](https://runlogstorageaccount.z13.web.core.windows.net/)
+- [RunLog REST API](https://runlog.azurewebsites.net/index.html)
 
 # Introduction
 RunLog is an activity tracking application.  Users can create/edit/delete activities.  And activity has a start/stop button and while the activity is running, the device's geolocation coordinates are tracked and stored in the RunLog system.
