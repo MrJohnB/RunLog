@@ -174,10 +174,10 @@ namespace LiteBulb.RunLog.Api.LoadTests
 		/// <returns>CompletedTask</returns>
 		private static async Task UpdateParentAsync(Activity activity)
 		{
-			var runnerName = $"UPDATED {activity.RunnerName}";
+			var athleteName = $"UPDATED {activity.AthleteName}";
 			var status = ActivityStatus.Complete;
 
-			activity.RunnerName = runnerName;
+			activity.AthleteName = athleteName;
 			activity.Status = status;
 
 			var requestUri = $"{_activitiesRequestUri}/{activity.Id}";
@@ -186,7 +186,7 @@ namespace LiteBulb.RunLog.Api.LoadTests
 			if (updatedActivity == null || updatedActivity == default)
 				throw new Exception($"Error occurred during an API update {nameof(Activity)} operation.");
 
-			if (updatedActivity.RunnerName != runnerName || updatedActivity.Status != status)
+			if (updatedActivity.AthleteName != athleteName || updatedActivity.Status != status)
 				throw new Exception("Activity properties not updated correctly following API update operation.");
 		}
 
@@ -238,7 +238,7 @@ namespace LiteBulb.RunLog.Api.LoadTests
 			//TODO: make it use reflection to display properties for any object
 			string header =
 				$"{nameof(Activity.Id),5}" +
-				$"{nameof(Activity.RunnerName),20}" +
+				$"{nameof(Activity.AthleteName),20}" +
 				$"{nameof(Activity.Type),8}" +
 				$"{nameof(Activity.Status),12}" +
 				$"{nameof(Activity.CreatedAt),23}" +
@@ -259,7 +259,7 @@ namespace LiteBulb.RunLog.Api.LoadTests
 			//TODO: make it use reflection to display properties for any object
 			string row =
 				$"{item.Id,5}" +
-				$"{item.RunnerName,20}" +
+				$"{item.AthleteName,20}" +
 				$"{item.Type,8}" +
 				$"{item.Status,12}" +
 				$"{item.CreatedAt,23}" +
@@ -284,7 +284,7 @@ namespace LiteBulb.RunLog.Api.LoadTests
 
 			var activity = new Activity()
 			{
-				RunnerName = name,
+				AthleteName = name,
 				Type = type,
 				Status = status,
 				CreatedAt = DateTime.Now,

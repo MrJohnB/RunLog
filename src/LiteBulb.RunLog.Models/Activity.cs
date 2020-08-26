@@ -14,7 +14,7 @@ namespace LiteBulb.RunLog.Models
 		/// <summary>
 		/// Name of the athlete doing the Activity.
 		/// </summary>
-		public string RunnerName { get; set; }
+		public string AthleteName { get; set; }
 
 		/// <summary>
 		/// Type of Activity being performed (Walk, Run, Bike, Swim).
@@ -68,7 +68,7 @@ namespace LiteBulb.RunLog.Models
 		public Activity()
 		{
 			Id = int.MinValue;
-			RunnerName = string.Empty;
+			AthleteName = string.Empty;
 			Type = ActivityType.Undefined;
 			Status = ActivityStatus.Undefined;
 			CreatedAt = DateTime.MinValue;

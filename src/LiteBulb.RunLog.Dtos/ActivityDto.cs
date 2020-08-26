@@ -24,7 +24,7 @@ namespace LiteBulb.RunLog.Dtos
 		[Display(Name = "Athlete Name")]
 		[Required(AllowEmptyStrings = false)]
 		[StringLength(512)]
-		public string RunnerName { get; set; }
+		public string AthleteName { get; set; }
 
 		/// <summary>
 		/// Type of Activity being performed (Walk, Run, Bike, Swim).
@@ -102,7 +102,7 @@ namespace LiteBulb.RunLog.Dtos
 		public ActivityDto()
 		{
 			Id = null;
-			RunnerName = string.Empty;
+			AthleteName = string.Empty;
 			Type = ActivityType.Undefined;
 			Status = ActivityStatus.Undefined;
 			CreatedAt = DateTime.MinValue;

@@ -74,7 +74,7 @@ namespace LiteBulb.MemoryDb.LoadTests
 
 			// Get first item and change a field
 			var item = GetAllItems().First();
-			item.RunnerName = "John Bianchi";
+			item.AthleteName = "John Bianchi";
 			
 			// Update the item
 			UpdateItem(item);
@@ -113,7 +113,7 @@ namespace LiteBulb.MemoryDb.LoadTests
 
 			string header =
 				$"{nameof(Activity.Id),5}" +
-				$"{nameof(Activity.RunnerName),15}" +
+				$"{nameof(Activity.AthleteName),15}" +
 				$"{nameof(Activity.Type),8}" +
 				$"{nameof(Activity.Status),12}" +
 				$"{nameof(Activity.CreatedAt),23}" +
@@ -133,7 +133,7 @@ namespace LiteBulb.MemoryDb.LoadTests
 
 				string row =
 					$"{item.Id,5}" +
-					$"{item.RunnerName,15}" +
+					$"{item.AthleteName,15}" +
 					$"{item.Type,8}" +
 					$"{item.Status,12}" +
 					$"{item.CreatedAt,23}" +
@@ -211,7 +211,7 @@ namespace LiteBulb.MemoryDb.LoadTests
 
 			var item = new Activity()
 			{
-				RunnerName = name,
+				AthleteName = name,
 				Type = type,
 				Status = status,
 				CreatedAt = DateTime.Now,

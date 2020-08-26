@@ -18,7 +18,7 @@ namespace LiteBulb.RunLog.Dtos.Extensions
 			return new ActivityDto()
 			{
 				Id = activity.Id > 0 ? activity.Id : (int?)null,
-				RunnerName = activity.RunnerName,
+				AthleteName = activity.AthleteName,
 				Type = activity.Type,
 				Status = activity.Status,
 				CreatedAt = activity.CreatedAt,
@@ -57,7 +57,7 @@ namespace LiteBulb.RunLog.Dtos.Extensions
 			return new Activity()
 			{
 				Id = activityDto.Id.HasValue ? activityDto.Id.Value : 0,
-				RunnerName = activityDto.RunnerName,
+				AthleteName = activityDto.AthleteName,
 				Type = activityDto.Type,
 				Status = activityDto.Status,
 				CreatedAt = activityDto.CreatedAt,
