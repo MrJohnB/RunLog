@@ -1,5 +1,11 @@
 ![.NET Core](https://github.com/MrJohnB/RunLog/workflows/.NET%20Core/badge.svg)
 
+# Demo
+
+[![RunLog Website](https://raw.githubusercontent.com/MrJohnB/RunLog/master/src/LiteBulb.RunLog.Web/wwwroot/runlog-logo.png)](https://runlogstorageaccount.z13.web.core.windows.net/)
+
+[RunLog REST API](https://runlog.azurewebsites.net/index.html)
+
 # Introduction
 RunLog is an activity tracking application.  Users can create/edit/delete activities.  And activity has a start/stop button and while the activity is running, the device's geolocation coordinates are tracked and stored in the RunLog system.
 
@@ -34,15 +40,15 @@ A solution called RunLog will be developed to perform the required operations.
 Note: See below for links to code repositories.
 
 # Documentation
-- [README.md] (https://github.com/MrJohnB/RunLog/blob/master/README.md)
-- [Solution Document] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-solution-document.docx)
-- [RunLog Rest API] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-rest-api-guide.docx)
-- [Diagrams] (https://github.com/MrJohnB/RunLog/blob/master/docs/diagrams/runlog-diagrams.drawio)
-- [Installation] (https://github.com/MrJohnB/RunLog/blob/master/docs/guides/RunLog%20API%20Installation%20Guide.docx)
+- [README.md](https://github.com/MrJohnB/RunLog/blob/master/README.md)
+- [Solution Document](https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-solution-document.docx)
+- [RunLog Rest API](https://github.com/MrJohnB/RunLog/blob/master/docs/guides/runlog-rest-api-guide.docx)
+- [Diagrams](https://github.com/MrJohnB/RunLog/blob/master/docs/diagrams/runlog-diagrams.drawio)
+- [Installation](https://github.com/MrJohnB/RunLog/blob/master/docs/guides/RunLog%20API%20Installation%20Guide.docx)
 
 # GitHub
-- [RunLog Project] (https://github.com/users/MrJohnB/projects/1)
-- [RunLog Repository] (https://github.com/MrJohnB/RunLog)
+- [RunLog Project](https://github.com/users/MrJohnB/projects/1)
+- [RunLog Repository](https://github.com/MrJohnB/RunLog)
 
 # Getting Started
 TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
@@ -56,8 +62,7 @@ TODO: Guide users through getting your code up and running on their own system. 
 TODO: Describe and show how to build your code and run the tests.
 
 # Contribute
-- [RunLog Repository] (https://github.com)
-TODO: Explain how other users and developers can contribute to make your code better. 
+- [RunLog Repository](https://github.com/MrJohnB/RunLog)
 
 If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
 - [ASP.NET Core](https://github.com/aspnet/Home)
