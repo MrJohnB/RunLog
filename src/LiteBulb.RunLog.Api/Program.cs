@@ -79,7 +79,7 @@ namespace LiteBulb.RunLog.Api
 			var filePath = host.Services
 				.GetRequiredService<Microsoft.Extensions.Options.IOptions<Configurations.ConfigSections.DatabaseSettings>>()
 				.Value.TransactionLogFilePath;
-			Services.Backups.DatabaseRestoreManager.Restore(databaseContext, filePath);
+			Services.Database.DatabaseRestoreManager.Restore(databaseContext, filePath);
 		}
 	}
 }
