@@ -26,5 +26,20 @@ namespace LiteBulb.RunLog.Configurations.ConfigSections
 		/// Name of collection for Position object.
 		/// </summary>
 		public string PositionCollectionName { get; set; }
+
+		/// <summary>
+		/// Whether to log database transactions to Debug window.
+		/// </summary>
+		public bool LogToDebug { get; set; }
+
+		/// <summary>
+		/// Whether to log database transactions to file (JSON).
+		/// </summary>
+		public bool LogToFile { get; set; }
+
+		/// <summary>
+		/// File path for the database transaction log.
+		/// </summary>
+		public string TransactionLogFilePath { get; set; }
 	}
 }

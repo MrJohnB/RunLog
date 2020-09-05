@@ -1,4 +1,5 @@
 ﻿using LiteBulb.Common.DataModel;
+using LiteBulb.MemoryDb.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,16 @@ namespace LiteBulb.MemoryDb
 		/// </summary>
 		public string Name { get; }
 
+		/// <summary>
+		/// Allows (from this class) setting the Enabled property on the ITransactionLogger instance.
+		/// </summary>
+		/// <param name="enabled">Whether transaction logging should be enabled</param>
+		public void SetTransactionLoggingEnablement(bool enabled)
+		{
+			foreach (var transactionLogger in _transactionLoggers)
+				transactionLogger.Enabled = enabled;
+		}
+
 		// Key: Name of collection
 		// Value: Collection object
 		private readonly Dictionary<string, object> _collections;
@@ -20,15 +31,25 @@ namespace LiteBulb.MemoryDb
 		// Note: for casting
 		private readonly Dictionary<string, Type> _collectionTypes;
 
+		// Transaction logger instances for this database (i.e. FileTransactionLogger, DebugTransactionLogger)
+		private readonly IList<ITransactionLogger> _transactionLoggers;
+
 		/// <summary>
 		/// Constructor for MemoryDatabase.
 		/// </summary>
 		/// <param name="databaseName">Name of database</param>
 		public MemoryDatabase(string databaseName)
 		{
-			Name = databaseName;
+			Name = databaseName ?? throw new ArgumentNullException();
 			_collectionTypes = new Dictionary<string, Type>();
 			_collections = new Dictionary<string, object>();
+			_transactionLoggers = new List<ITransactionLogger>();
+		}
+
+		public MemoryDatabase(string databaseName, IEnumerable<ITransactionLogger> transactionLoggers) : this(databaseName)
+		{
+			foreach (var transactionLogger in transactionLoggers)
+				_transactionLoggers.Add(transactionLogger);
 		}
 
 		/// <summary>
@@ -45,7 +66,12 @@ namespace LiteBulb.MemoryDb
 				throw new ArgumentException($"The database already contains a collection with name: '{collectionName}'.");
 
 			_collectionTypes.Add(collectionName, typeof(TDocument));
-			_collections.Add(collectionName, new MemoryCollection<TDocument>(collectionName));
+			var memoryCollection = new MemoryCollection<TDocument>(collectionName);
+			_collections.Add(collectionName, memoryCollection);
+
+			// Add EventHandler method for each TransactionLogger instance
+			foreach (var transactionLogger in _transactionLoggers)
+				memoryCollection.TransactionOccurred += transactionLogger.OnTransactionOccurred;
 		}
 
 		/// <summary>
@@ -71,7 +97,7 @@ namespace LiteBulb.MemoryDb
 		}
 
 		/// <summary>
-		/// Checks if a colletion exists.
+		/// Checks if a collection exists.
 		/// </summary>
 		/// <param name="collectionName">Name of the collection to check</param>
 		/// <returns>Boolean of whether collection exists or not</returns>

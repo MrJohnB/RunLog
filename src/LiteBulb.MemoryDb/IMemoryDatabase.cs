@@ -10,6 +10,12 @@ namespace LiteBulb.MemoryDb
 		string Name { get; }
 
 		/// <summary>
+		/// Allows (from this class) setting the Enabled property on the ITransactionLogger instance.
+		/// </summary>
+		/// <param name="enabled">Whether transaction logging should be enabled</param>
+		void SetTransactionLoggingEnablement(bool enabled);
+
+		/// <summary>
 		/// Creates a collection in the database.
 		/// </summary>
 		/// <typeparam name="TDocument">Type of document object for this collection</typeparam>

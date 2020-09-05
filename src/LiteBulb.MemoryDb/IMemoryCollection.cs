@@ -1,4 +1,5 @@
 ﻿using LiteBulb.MemoryDb.Enumerations;
+using LiteBulb.MemoryDb.Events;
 using System;
 using System.Collections.Generic;
 
@@ -14,6 +15,11 @@ namespace LiteBulb.MemoryDb
 		/// Name of the collection (AKA "table" name).
 		/// </summary>
 		string Name { get; }
+
+		/// <summary>
+		/// Event and EventHandler for transaction events.
+		/// </summary>
+		event EventHandler<TransactionEventArgs> TransactionOccurred;
 
 		/// <summary>
 		/// Count of all documents in the collection.

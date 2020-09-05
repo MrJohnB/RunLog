@@ -1,4 +1,6 @@
 ﻿using LiteBulb.Common.DataModel;
+using LiteBulb.MemoryDb.Logging;
+using System.Collections.Generic;
 
 namespace LiteBulb.MemoryDb
 {
@@ -13,6 +15,11 @@ namespace LiteBulb.MemoryDb
 		public DatabaseContext(string databaseName)
 		{
 			Database = new MemoryDatabase(databaseName);
+		}
+
+		public DatabaseContext(string databaseName, IEnumerable<ITransactionLogger> transactionLoggers)
+		{
+			Database = new MemoryDatabase(databaseName, transactionLoggers);
 		}
 
 		/// <summary>
@@ -44,6 +51,5 @@ namespace LiteBulb.MemoryDb
 
 			return true;
 		}
-
 	}
 }

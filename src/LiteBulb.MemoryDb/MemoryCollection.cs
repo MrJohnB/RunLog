@@ -1,5 +1,6 @@
 ﻿using LiteBulb.Common.DataModel;
 using LiteBulb.MemoryDb.Enumerations;
+using LiteBulb.MemoryDb.Events;
 using LiteBulb.MemoryDb.Extensions;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,15 @@ namespace LiteBulb.MemoryDb
 
 		private int _identity;
 		private readonly int _increment;
+
+		/// <summary>
+		/// Event and EventHandler for transaction events.
+		/// </summary>
+		public event EventHandler<TransactionEventArgs> TransactionOccurred;
+		protected virtual void OnTransactionOccurred(TransactionType transactionType, TDocument document) =>
+			TransactionOccurred?.Invoke(this, new TransactionEventArgs(new Transaction(Name, transactionType, new[] { document })));
+		protected virtual void OnTransactionOccurred(TransactionType transactionType, IEnumerable<TDocument> documents) =>
+			TransactionOccurred?.Invoke(this, new TransactionEventArgs(new Transaction(Name, transactionType, documents)));
 
 		/// <summary>
 		/// Constructor.
@@ -208,6 +218,8 @@ namespace LiteBulb.MemoryDb
 
 			document.Id = clone.Id;
 
+			OnTransactionOccurred(TransactionType.Insert, document);
+
 			return document;
 		}
 
@@ -246,6 +258,8 @@ namespace LiteBulb.MemoryDb
 				_items[document.Id] = document.CloneJson();
 			}
 
+			OnTransactionOccurred(TransactionType.Update, document);
+
 			return document;
 		}
 
@@ -274,6 +288,8 @@ namespace LiteBulb.MemoryDb
 				}
 			}
 
+			OnTransactionOccurred(TransactionType.Update, updatedItems);
+
 			return updatedItems;
 		}
 
@@ -283,15 +299,17 @@ namespace LiteBulb.MemoryDb
 		/// <returns>Count of documents that were deleted</returns>
 		public int DeleteAll()
 		{
-			int count = 0;
+			TDocument[] items;
 
 			lock (syncLock)
 			{
-				count = _items.Count;
+				items = _items.Values.ToArray();
 				_items.Clear();
 			}
 
-			return count;
+			OnTransactionOccurred(TransactionType.Delete, items);
+
+			return items.Length;
 		}
 
 		/// <summary>
@@ -306,13 +324,17 @@ namespace LiteBulb.MemoryDb
 
 			lock (syncLock)
 			{
-				if (!_items.ContainsKey(id))
-					return false;
-
-				_items.Remove(id);
+				if (_items.TryGetValue(id, out TDocument deletedItem))
+				{
+					if (_items.Remove(id))
+					{
+						OnTransactionOccurred(TransactionType.Delete, deletedItem);
+						return true;
+					}
+				}
 			}
 
-			return true;
+			return false;
 		}
 
 		/// <summary>
@@ -325,18 +347,23 @@ namespace LiteBulb.MemoryDb
 			if (filter == null)
 				throw new ArgumentNullException();
 
-			int removedCount = 0;
+			var deletedItems = new List<TDocument>();
 
 			lock (syncLock)
 			{
 				var keys = _items.Where(kvp => filter(kvp.Value)).Select(x => x.Key); // Does this actually work??
 
 				foreach (var key in keys)
-					if (_items.Remove(key))
-						removedCount++;
+				{
+					if (_items.TryGetValue(key, out TDocument deletedItem))
+						if (_items.Remove(key))
+							deletedItems.Add(deletedItem);
+				}
 			}
 
-			return removedCount;
+			OnTransactionOccurred(TransactionType.Delete, deletedItems);
+
+			return deletedItems.Count;
 		}
 	}
 }
