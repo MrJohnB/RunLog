@@ -52,10 +52,21 @@ else
 			}
 		</tbody>
 	</table>
+	<div>
+		<button type="button" @onclick="HandlePrevious" class="btn btn-primary oi oi-arrow-thick-left"><span class="d-none">Prev</span></button>
+		<button type="button" @onclick="HandleNext" class="btn btn-primary oi oi-arrow-thick-right"><span class="d-none">Next</span></button>
+		<span>Showing @currentActivityIndex to @currentActivityCount of @totalActivityCount entries</span>
+	</div>
 }
 
 @code {
 	private IReadOnlyCollection<ActivityDto> activities;
+	private long totalActivityCount;
+	private long currentActivityCount;
+	private long currentActivityIndex;
+
+	private int pageOffset = 0;
+	private int pageSize = 10;
 
 	private Timer timer;
 	private const int timerInterval = 3000;
@@ -63,16 +74,39 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		activities = await GetActivities();
+		await GetActivitiesAsync();
 
 		//TODO: get rid of timer on this page
 		StartTimer();
 	}
 
-	private async Task<IReadOnlyCollection<ActivityDto>> GetActivities(int offset = 0, int limit = 10)
+	private async Task GetActivitiesAsync(int offset = 0, int limit = 10)
 	{
 		var pagedResult = await Http.GetFromJsonAsync<PagedResult<ActivityDto>>(Settings.ActivitiesRequestUri + $"/{offset},{limit}");
-		return pagedResult.Data;
+
+		activities = pagedResult.Data;
+		totalActivityCount = pagedResult.Total;
+		currentActivityCount = totalActivityCount - offset;
+		currentActivityIndex = (currentActivityCount - pageSize) > 0 ? currentActivityCount - pageSize + 1 : 1;
+	}
+
+	private async void HandlePrevious()
+	{
+		if (pageOffset - pageSize > 0)
+			pageOffset -= pageSize;
+		else
+			pageOffset = 0;
+
+		await GetActivitiesAsync(pageOffset, pageSize);
+		await InvokeAsync(() => { StateHasChanged(); });
+	}
+	private async void HandleNext()
+	{
+		if (pageOffset + pageSize < totalActivityCount)
+			pageOffset += pageSize;
+
+		await GetActivitiesAsync(pageOffset, pageSize);
+		await InvokeAsync(() => { StateHasChanged(); });
 	}
 
 	//TODO: get rid of timer
@@ -86,7 +120,7 @@ else
 
 	private async void TimerElapsedHandler(object source, ElapsedEventArgs args)
 	{
-		activities = await GetActivities();
+		await GetActivitiesAsync(pageOffset, pageSize);
 
 		// Note that the following line is necessary because otherwise
 		// Blazor would not recognize the state change and not refresh the UI
