@@ -1,0 +1,32 @@
+﻿@using LiteBulb.RunLog.Web.ViewModels
+
+<div>
+	<button type="button" @onclick="HandlePrevious" class="btn btn-primary oi oi-arrow-thick-left"><span class="d-none">Prev</span></button>
+	<button type="button" @onclick="HandleNext" class="btn btn-primary oi oi-arrow-thick-right"><span class="d-none">Next</span></button>
+	<span>Showing @Paging.CurrentEntityIndex to @Paging.CurrentEntityCount of @Paging.TotalEntityCount entries</span>
+</div>
+
+@code {
+	[Parameter]
+	public EventCallback<EventArgs> OnClickPaging { get; set; }
+
+	[Parameter]
+	public PaginationViewModel Paging { get; set; }
+
+	private async Task HandlePrevious()
+	{
+		if (Paging.PageOffset - Paging.PageSize > 0)
+			Paging.PageOffset -= Paging.PageSize;
+		else
+			Paging.PageOffset = 0;
+
+		await OnClickPaging.InvokeAsync(EventArgs.Empty);
+	}
+	private async Task HandleNext()
+	{
+		if (Paging.PageOffset + Paging.PageSize < Paging.TotalEntityCount)
+			Paging.PageOffset += Paging.PageSize;
+
+		await OnClickPaging.InvokeAsync(EventArgs.Empty);
+	}
+}
