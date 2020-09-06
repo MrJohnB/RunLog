@@ -1,0 +1,5 @@
+﻿/* Custom CSS overrides */
+
+.table td, .table th {
+    vertical-align: middle;
+}
