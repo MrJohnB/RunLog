@@ -3,7 +3,7 @@ namespace LiteBulb.RunLog.Web.ViewModels
 {
 	public class PaginationViewModel
 	{
-		public int PageOffset { get; set; }
+		public int PageIndex { get; set; }
 		public int PageSize { get; set; }
 		public long TotalEntityCount { get; set; }
 		public long CurrentEntityCount { get; set; }
@@ -13,7 +13,7 @@ namespace LiteBulb.RunLog.Web.ViewModels
 
 		public PaginationViewModel()
 		{
-			PageOffset = 0;
+			PageIndex = 0;
 			PageSize = 10;
 			TotalEntityCount = 0;
 			CurrentEntityCount = 0;

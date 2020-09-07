@@ -15,17 +15,17 @@
 
 	private async Task HandlePrevious()
 	{
-		if (Paging.PageOffset - Paging.PageSize > 0)
-			Paging.PageOffset -= Paging.PageSize;
+		if (Paging.PageIndex - Paging.PageSize > 0)
+			Paging.PageIndex -= Paging.PageSize;
 		else
-			Paging.PageOffset = 0;
+			Paging.PageIndex = 0;
 
 		await OnClickPaging.InvokeAsync(EventArgs.Empty);
 	}
 	private async Task HandleNext()
 	{
-		if (Paging.PageOffset + Paging.PageSize < Paging.TotalEntityCount)
-			Paging.PageOffset += Paging.PageSize;
+		if (Paging.PageIndex + Paging.PageSize < Paging.TotalEntityCount)
+			Paging.PageIndex += Paging.PageSize;
 
 		await OnClickPaging.InvokeAsync(EventArgs.Empty);
 	}
