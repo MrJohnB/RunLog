@@ -1,44 +1,62 @@
 ﻿@page "/activities/positions"
+@implements IDisposable
 @inject HttpClient Http
 @inject ApiSettings Settings
 @using LiteBulb.RunLog.Web.Shared
 @using System.Timers
 @using LiteBulb.Common.DataModel
 @using LiteBulb.RunLog.Dtos
+@using LiteBulb.RunLog.Web.ViewModels
 
 <h3>Positions</h3>
 <p>A list of all positions in the system</p>
 
 <PositionList Positions="@positions" />
+<Pagination OnClickPaging="GetPagedResultHandler" Paging="Paging" />
 
 @code {
+	private PaginationViewModel Paging = new PaginationViewModel();
 	private IReadOnlyCollection<PositionDto> positions;
+
 	private Timer timer;
+	private const int timerInterval = 4000;
+	void IDisposable.Dispose() => timer?.Dispose();
 
 	protected override async Task OnInitializedAsync()
 	{
-		positions = await GetPositions();
+		await GetPagedResultHandler(EventArgs.Empty);
 
+		//TODO: get rid of timer
 		StartTimer();
 	}
 
-	private async Task<IReadOnlyCollection<PositionDto>> GetPositions(int offset = 0, int limit = 20)
+	private async Task<PagedResult<PositionDto>> GetPagedResultAsync(int offset = 0, int limit = 20)
 	{
-		var pagedResult = await Http.GetFromJsonAsync<PagedResult<PositionDto>>(Settings.PositionsRequestUri + $"/{offset},{limit}");
-		return pagedResult.Data;
+		return await Http.GetFromJsonAsync<PagedResult<PositionDto>>(Settings.PositionsRequestUri + $"/{offset},{limit}");
 	}
 
+	private async Task GetPagedResultHandler(EventArgs args)
+	{
+		var pagedResult = await GetPagedResultAsync(Paging.PageOffset, Paging.PageSize);
+
+		positions = pagedResult.Data;
+		Paging.TotalEntityCount = pagedResult.Total;
+		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageOffset;
+		Paging.CurrentEntityIndex = (Paging.CurrentEntityCount - Paging.PageSize) > 0 ? Paging.CurrentEntityCount - Paging.PageSize + 1 : 1;
+	}
+
+	//TODO: get rid of timer
 	private void StartTimer()
 	{
-		timer = new Timer(2000);
+		timer = new Timer(timerInterval);
 		timer.Elapsed += TimerElapsedHandler;
 		timer.Start();
 		Console.WriteLine("Timer Started (List Positions).");
 	}
 
-	private async void TimerElapsedHandler(Object source, ElapsedEventArgs e)
+	private async void TimerElapsedHandler(object source, ElapsedEventArgs e)
 	{
-		positions = await GetPositions();
+		await GetPagedResultHandler(EventArgs.Empty);
 
 		// Note that the following line is necessary because otherwise
 		// Blazor would not recognize the state change and not refresh the UI
