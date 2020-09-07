@@ -1,10 +1,10 @@
 ﻿@using LiteBulb.RunLog.Web.ViewModels
 
-<div>
+<p>
 	<button type="button" @onclick="HandlePrevious" class="btn btn-primary oi oi-arrow-thick-left"><span class="d-none">Prev</span></button>
 	<button type="button" @onclick="HandleNext" class="btn btn-primary oi oi-arrow-thick-right"><span class="d-none">Next</span></button>
 	<span>Showing @Paging.CurrentEntityIndex to @Paging.CurrentEntityCount of @Paging.TotalEntityCount entries</span>
-</div>
+</p>
 
 @code {
 	[Parameter]

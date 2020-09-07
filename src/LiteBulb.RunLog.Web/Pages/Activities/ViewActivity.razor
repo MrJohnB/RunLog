@@ -18,15 +18,20 @@
 	<button type="button" @onclick="HandleStopButton" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
 </p>
 
-<PositionList Positions="@GetPositionsPage()" />
+<PositionList Positions="@GetPositionsPage(Paging.PageIndex, Paging.PageSize)" />
+<Pagination OnClickPaging="GetPagedResultHandler" Paging="Paging" />
 
-<button type="button" @onclick="HandleBack" class="btn btn-primary">Back</button>
+<p>
+	<button type="button" @onclick="HandleBack" class="btn btn-primary">Back</button>
+</p>
 
 @code {
 	[Parameter]
 	public string ActivityId { get; set; }
 
-	private Timer timer;
+	private static PaginationViewModel Paging = new PaginationViewModel();
+
+	private Timer timer; //TODO: get rid of timer
 	private const int timerInterval = 3000;
 	void IDisposable.Dispose() => timer?.Dispose();
 
@@ -39,23 +44,6 @@
 	private static ActivityDto activity = new ActivityDto();
 	private static HttpClient http;
 	private static ApiSettings settings;
-
-	private IEnumerable<PositionDto> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
-	{
-		int index = 0;
-		int count = 0;
-
-		foreach (var position in activity.Positions)
-		{
-			if (count++ >= pageSize)
-				break;
-
-			if (index++ < pageIndex)
-				continue;
-
-			yield return position;
-		}
-	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -78,11 +66,36 @@
 
 		Console.WriteLine($"Activity object with id: '{ActivityId}' was found successfully.");
 
+		GetPagedResultHandler(EventArgs.Empty);
+
 		// For JSInvokable static callback method
 		stateHasChanged = () => this.StateHasChanged();
 		http = Http;
 		settings = Settings;
+	}
 
+	private IEnumerable<PositionDto> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
+	{
+		int endIndex = pageIndex + pageSize;
+
+		for (int i = pageIndex; i < endIndex; i++)
+		{
+			if (i >= activity.Positions.Count)
+				break;
+
+			yield return activity.Positions[i];
+		}
+	}
+
+	private static void GetPagedResultHandler(EventArgs args)
+	{
+		Paging.TotalEntityCount = activity.Positions.Count;
+		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageIndex;
+
+		if (Paging.TotalEntityCount == 0)
+			Paging.CurrentEntityIndex = 0;
+		else
+			Paging.CurrentEntityIndex = (Paging.CurrentEntityCount - Paging.PageSize) > 0 ? Paging.CurrentEntityCount - Paging.PageSize + 1 : 1;
 	}
 
 	private async Task HandleAddCurrentGpsPosition()
@@ -110,6 +123,7 @@
 		Console.WriteLine($"Position object with id: '{createdPosition.Id}' was created successfully.");
 
 		activity.Positions.Insert(0, createdPosition);
+		GetPagedResultHandler(EventArgs.Empty);
 		stateHasChanged();
 	}
 
