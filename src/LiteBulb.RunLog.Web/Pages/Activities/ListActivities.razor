@@ -17,7 +17,7 @@
 else
 {
 	<div class="table-responsive">
-		<table class="table table-sm">
+		<table class="table table-sm table-hover">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -27,9 +27,8 @@ else
 					<th>Description</th>
 					<th>Units</th>
 					<th>Positions</th>
-					<th>Started</th>
-					<th>Completed</th>
-					<th><span class="invisible">View</span></th>
+					<th>Start Time</th>
+					<th>End Time</th>
 					<th><span class="invisible">Edit</span></th>
 					<th><span class="invisible">Delete</span></th>
 				</tr>
@@ -38,16 +37,15 @@ else
 				@foreach (var activity in activities)
 				{
 					<tr>
-						<td>@activity.Id.ToString()</td>
-						<td>@activity.AthleteName</td>
-						<td>@activity.Type</td>
-						<td>@activity.Status.ToString()</td>
-						<td>@activity.Description</td>
-						<td>@activity.Units</td>
-						<td>@activity?.PositionCount</td>
-						<td>@activity.StartedAt</td>
-						<td>@activity.CompletedAt</td>
-						<td><a class="btn btn-primary" href="/activities/@activity.Id">View</a></td>
+						<td><a href="/activities/@activity.Id">@activity.Id</a></td>
+						<td><a href="/activities/@activity.Id">@activity.AthleteName</a></td>
+						<td><a href="/activities/@activity.Id">@activity.Type</a></td>
+						<td><a href="/activities/@activity.Id">@activity.Status.ToString()</a></td>
+						<td><a href="/activities/@activity.Id">@activity.Description</a></td>
+						<td><a href="/activities/@activity.Id">@activity.Units</a></td>
+						<td><a href="/activities/@activity.Id">@activity?.PositionCount</a></td>
+						<td><a href="/activities/@activity.Id">@activity.StartedAt</a></td>
+						<td><a href="/activities/@activity.Id">@activity.CompletedAt</a></td>
 						<td><a class="btn btn-primary" href="/activities/@activity.Id/edit">Edit</a></td>
 						<td><a class="btn btn-primary" href="/activities/@activity.Id/delete">Delete</a></td>
 					</tr>
@@ -64,7 +62,6 @@ else
 					<th>Positions</th>
 					<th>Started</th>
 					<th>Completed</th>
-					<th></th>
 					<th></th>
 					<th></th>
 				</tr>

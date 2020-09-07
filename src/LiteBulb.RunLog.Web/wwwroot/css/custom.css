@@ -1,5 +1,13 @@
 ﻿/* Custom CSS overrides */
 
 .table td, .table th {
+    padding: 0;
     vertical-align: middle;
+}
+
+.table-hover td a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
 }
