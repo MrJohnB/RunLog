@@ -18,7 +18,7 @@
 	<button type="button" @onclick="HandleStopButton" class="btn btn-primary" disabled="@stopButtonDisabled">Stop</button>
 </p>
 
-<PositionList Positions="@GetPositionsPage(Paging.PageIndex, Paging.PageSize)" />
+<PositionList Positions="@GetPositionsPage(Paging.PageOffset, Paging.PageSize)" />
 <Pagination OnClickPaging="GetPagedResultHandler" Paging="Paging" />
 
 <p>
@@ -74,11 +74,11 @@
 		settings = Settings;
 	}
 
-	private IEnumerable<PositionDto> GetPositionsPage(int pageIndex = 0, int pageSize = 10)
+	private IEnumerable<PositionDto> GetPositionsPage(int pageOffset = 0, int pageSize = 10)
 	{
-		int endIndex = pageIndex + pageSize;
+		int endIndex = pageOffset + pageSize;
 
-		for (int i = pageIndex; i < endIndex; i++)
+		for (int i = pageOffset; i < endIndex; i++)
 		{
 			if (i >= activity.Positions.Count)
 				break;
@@ -90,7 +90,7 @@
 	private static void GetPagedResultHandler(EventArgs args)
 	{
 		Paging.TotalEntityCount = activity.Positions.Count;
-		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageIndex;
+		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageOffset;
 
 		if (Paging.TotalEntityCount == 0)
 			Paging.CurrentEntityIndex = 0;

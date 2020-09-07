@@ -90,18 +90,18 @@ else
 		StartTimer();
 	}
 
-	private async Task<PagedResult<ActivityDto>> GetPagedResultAsync(int pageIndex = 0, int pageSize = 10)
+	private async Task<PagedResult<ActivityDto>> GetPagedResultAsync(int pageOffset = 0, int pageSize = 10)
 	{
-		return await Http.GetFromJsonAsync<PagedResult<ActivityDto>>(Settings.ActivitiesRequestUri + $"/{pageIndex},{pageSize}");
+		return await Http.GetFromJsonAsync<PagedResult<ActivityDto>>(Settings.ActivitiesRequestUri + $"/{pageOffset},{pageSize}");
 	}
 
 	private async Task GetPagedResultHandler(EventArgs args)
 	{
-		var pagedResult = await GetPagedResultAsync(Paging.PageIndex, Paging.PageSize);
+		var pagedResult = await GetPagedResultAsync(Paging.PageOffset, Paging.PageSize);
 
 		activities = pagedResult.Data;
 		Paging.TotalEntityCount = pagedResult.Total;
-		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageIndex;
+		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageOffset;
 		Paging.CurrentEntityIndex = (Paging.CurrentEntityCount - Paging.PageSize) > 0 ? Paging.CurrentEntityCount - Paging.PageSize + 1 : 1;
 	}
 
