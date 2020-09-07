@@ -13,6 +13,17 @@
 	[Parameter]
 	public PaginationViewModel Paging { get; set; }
 
+	public static void UpdatePagingProperties(long totalEntityCount, PaginationViewModel paging)
+	{
+		paging.TotalEntityCount = totalEntityCount;
+		paging.CurrentEntityCount = paging.TotalEntityCount - paging.PageOffset;
+
+		if (paging.TotalEntityCount == 0)
+			paging.CurrentEntityIndex = 0;
+		else
+			paging.CurrentEntityIndex = (paging.CurrentEntityCount - paging.PageSize) > 0 ? paging.CurrentEntityCount - paging.PageSize + 1 : 1;
+	}
+
 	private async Task HandlePrevious()
 	{
 		if (Paging.PageOffset - Paging.PageSize > 0)

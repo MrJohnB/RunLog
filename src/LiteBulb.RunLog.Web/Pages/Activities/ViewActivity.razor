@@ -89,13 +89,7 @@
 
 	private static void GetPagedResultHandler(EventArgs args)
 	{
-		Paging.TotalEntityCount = activity.Positions.Count;
-		Paging.CurrentEntityCount = Paging.TotalEntityCount - Paging.PageOffset;
-
-		if (Paging.TotalEntityCount == 0)
-			Paging.CurrentEntityIndex = 0;
-		else
-			Paging.CurrentEntityIndex = (Paging.CurrentEntityCount - Paging.PageSize) > 0 ? Paging.CurrentEntityCount - Paging.PageSize + 1 : 1;
+		Pagination.UpdatePagingProperties(activity.Positions.Count, Paging);
 	}
 
 	private async Task HandleAddCurrentGpsPosition()
