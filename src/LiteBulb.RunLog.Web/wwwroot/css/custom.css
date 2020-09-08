@@ -5,7 +5,7 @@
     vertical-align: middle;
 }
 
-.table-hover td a {
+.table-hover td a.clickable {
     display: inline-block;
     width: 100%;
     height: 100%;
