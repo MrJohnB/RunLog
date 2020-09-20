@@ -55,7 +55,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
-**/Properties/launchSettings.json
+#**/Properties/launchSettings.json
 
 # StyleCop
 StyleCopReport.xml
@@ -331,4 +331,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/src/Dfin.CoreServices.FastService.Api/Logs
+
+# Log files
+/src/LiteBulb.RunLog.Api/Logs
