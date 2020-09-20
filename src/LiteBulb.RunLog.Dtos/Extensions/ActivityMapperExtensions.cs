@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace LiteBulb.RunLog.Dtos.Extensions
 {
 	/// <summary>
-	/// Extension methods that Activity models to Activity DTOs and vice versa.
+	/// Extension methods that map Activity models to Activity DTOs and vice versa.
 	/// </summary>
 	public static class ActivityMapperExtensions
 	{
