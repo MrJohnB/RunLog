@@ -20,8 +20,8 @@ else
 					<th>Altitude Accuracy</th>
 					<th>Heading</th>
 					<th>Speed</th>
-					<th><span class="invisible">Edit</span></th>
-					<th><span class="invisible">Delete</span></th>
+					<th><span class="d-none">Edit</span></th>
+					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -38,8 +38,8 @@ else
 						<td>@string.Format("{0:F1}", position.AltitudeAccuracy)</td>
 						<td>@string.Format("{0:F1}", position.Heading)</td>
 						<td>@string.Format("{0:F1}", position.Speed)</td>
-						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@position.ActivityId/positions/@position.Id/edit"><span class="d-none">Edit</span></a></td>
-						<td><a class="btn btn-primary oi oi-trash" href="/activities/@position.ActivityId/positions/@position.Id/delete"><span class="d-none">Delete</span></a></td>
+						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@position.ActivityId/positions/@position.Id/edit" title="Edit Position"><span class="d-none">Edit</span></a></td>
+						<td><a class="btn btn-primary oi oi-trash" href="/activities/@position.ActivityId/positions/@position.Id/delete" title="Delete Position"><span class="d-none">Delete</span></a></td>
 					</tr>
 				}
 			</tbody>
@@ -55,8 +55,8 @@ else
 					<th>Altitude Accuracy</th>
 					<th>Heading</th>
 					<th>Speed</th>
-					<th><span class="invisible">Edit</span></th>
-					<th><span class="invisible">Delete</span></th>
+					<th><span class="d-none">Edit</span></th>
+					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</tfoot>
 		</table>

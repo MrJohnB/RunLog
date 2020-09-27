@@ -11,7 +11,7 @@
 <h3>Activities</h3>
 <p>A list of all activities in the system</p>
 
-<a class="btn btn-primary action-button" href="/activities/add" title="Add Activity"><span class="oi oi-plus"></span><span class="d-none">Add Activity</span></a>
+<a class="btn btn-primary action-button" href="/activities/add" title="Add New Activity"><span class="oi oi-plus"></span><span class="d-none">Add Activity</span></a>
 
 @if (activities == null)
 {
@@ -32,8 +32,8 @@ else
 					<th>Positions</th>
 					<th>Start Time</th>
 					<th>End Time</th>
-					<th><span class="invisible">Edit</span></th>
-					<th><span class="invisible">Delete</span></th>
+					<th><span class="d-none">Edit</span></th>
+					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -49,8 +49,8 @@ else
 						<td><a class="clickable" href="/activities/@activity.Id">@activity?.PositionCount</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@activity.StartedAt</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@activity.CompletedAt</a></td>
-						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@activity.Id/edit"><span class="d-none">Edit</span></a></td>
-						<td><a class="btn btn-primary oi oi-trash" href="/activities/@activity.Id/delete"><span class="d-none">Delete</span></a></td>
+						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@activity.Id/edit" title="Edit Activity"><span class="d-none">Edit</span></a></td>
+						<td><a class="btn btn-primary oi oi-trash" href="/activities/@activity.Id/delete" title="Delete Activity"><span class="d-none">Delete</span></a></td>
 					</tr>
 				}
 			</tbody>
@@ -65,8 +65,8 @@ else
 					<th>Positions</th>
 					<th>Started</th>
 					<th>Completed</th>
-					<th><span class="invisible">Edit</span></th>
-					<th><span class="invisible">Delete</span></th>
+					<th><span class="d-none">Edit</span></th>
+					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</tfoot>
 		</table>

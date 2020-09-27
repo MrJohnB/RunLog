@@ -4,22 +4,22 @@
 <h3>JavaScript Interop Demo</h3>
 
 <div>
-	<button class="btn btn-primary" @onclick="HandleCallJavaScriptMethod">Call JavaScript method that writes to a &lt;p&gt; tag</button>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptMethod" title="Call JavaScript Function">Call JavaScript method that writes to a &lt;p&gt; tag</button>
 	<p id="paragraph"></p>
 </div>
 
 <div>
-	<button class="btn btn-primary" @onclick="HandleCallJavaScriptFunction">Call JavaScript function that returns a string</button>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptFunction" title="Call JavaScript Function">Call JavaScript function that returns a string</button>
 	<p>@javascriptFunctionResponse</p>
 </div>
 
 <div>
-	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallback">Call JavaScript function that invokes a C# callback method</button>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallback" title="Call JavaScript Function">Call JavaScript function that invokes a C# callback method</button>
 	<p>@callbackMethodMessage</p>
 </div>
 
 <div>
-	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallbackPassingBackData">Call JavaScript function that invokes a C# callback method that recieves data from JavaScript</button>
+	<button class="btn btn-primary" @onclick="HandleCallJavaScriptThatInvokesCallbackPassingBackData" title="Call JavaScript Function">Call JavaScript function that invokes a C# callback method that recieves data from JavaScript</button>
 	<p>@dataFromCallbackMethod</p>
 </div>
 
