@@ -11,12 +11,12 @@
 <h3>View Activity</h3>
 <p>Show some cool activity details here</p>
 
-<button type="button" @onclick="HandleAddPosition" class="btn btn-primary action-button" title="Add New Position"><span class="oi oi-plus"></span><span class="d-none">Add Position</span></button>
-<p>
-	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary" title="Add Current GPS Location"><span class="oi oi-map-marker"></span><span class="d-none">Add Current GPS</span></button>
-	<button type="button" @onclick="HandleStartButton" class="btn btn-primary" disabled="@startButtonDisabled" title="Start Recording Positions"><span class="oi oi-media-record"></span><span class="d-none">Start</span></button>
-	<button type="button" @onclick="HandleStopButton" class="btn btn-primary" disabled="@stopButtonDisabled" title="Stop Recording Positions"><span class="oi oi-media-stop"></span><span class="d-none">Stop</span></button>
-</p>
+<div class="action-buttons">
+	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary action-button" title="Add Current GPS Location"><span class="oi oi-map-marker"></span><span class="d-none">Add Current GPS</span></button>
+	<button type="button" @onclick="HandleStartButton" class="btn btn-primary action-button" disabled="@startButtonDisabled" title="Start Recording Positions"><span class="oi oi-media-record"></span><span class="d-none">Start</span></button>
+	<button type="button" @onclick="HandleStopButton" class="btn btn-primary action-button" disabled="@stopButtonDisabled" title="Stop Recording Positions"><span class="oi oi-media-stop"></span><span class="d-none">Stop</span></button>
+	<button type="button" @onclick="HandleAddPosition" class="btn btn-primary action-button" title="Add New Position"><span class="oi oi-plus"></span><span class="d-none">Add Position</span></button>
+</div>
 
 <PositionList Positions="@GetPositionsPage(Paging.PageOffset, Paging.PageSize)" />
 <Pagination OnClickPaging="GetPagedResultHandler" Paging="Paging" />
