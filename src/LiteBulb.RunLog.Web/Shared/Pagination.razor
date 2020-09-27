@@ -33,6 +33,7 @@
 
 		await OnClickPaging.InvokeAsync(EventArgs.Empty);
 	}
+
 	private async Task HandleNext()
 	{
 		if (Paging.PageOffset + Paging.PageSize < Paging.TotalEntityCount)
