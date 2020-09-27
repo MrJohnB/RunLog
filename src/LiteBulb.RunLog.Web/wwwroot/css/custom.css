@@ -21,9 +21,14 @@
 }
 
 .action-button {
-    margin:5px;
-    padding: 8px 10px;
-    line-height: 1em;
+    margin: 5px;
+    width: 42px;
+    line-height: 1.7em;
     border-radius: 100%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.action-button span {
+    /*[class*="oi-plus"]*/
+    top:2px;
 }
