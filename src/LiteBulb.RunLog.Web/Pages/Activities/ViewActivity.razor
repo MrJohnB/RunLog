@@ -11,6 +11,10 @@
 <h3>View Activity</h3>
 <p>Show some cool activity details here</p>
 
+<p>
+	<button type="button" @onclick="HandleBack" class="btn btn-primary" title="Go Back to Activities Screen">Back</button>
+</p>
+
 <div class="action-buttons">
 	<button type="button" @onclick="HandleAddCurrentGpsPosition" class="btn btn-primary action-button" title="Add Current GPS Location"><span class="oi oi-map-marker"></span><span class="d-none">Add Current GPS</span></button>
 	<button type="button" @onclick="HandleStartButton" class="btn btn-primary action-button" disabled="@startButtonDisabled" title="Start Recording Positions"><span class="oi oi-media-record"></span><span class="d-none">Start</span></button>
@@ -20,10 +24,6 @@
 
 <PositionList Positions="@GetPositionsPage(Paging.PageOffset, Paging.PageSize)" />
 <Pagination OnClickPaging="GetPagedResultHandler" Paging="Paging" />
-
-<p>
-	<button type="button" @onclick="HandleBack" class="btn btn-primary" title="Go Back to Activities Screen">Back</button>
-</p>
 
 @code {
 	[Parameter]
