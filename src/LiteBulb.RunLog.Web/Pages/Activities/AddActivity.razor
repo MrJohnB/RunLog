@@ -7,6 +7,10 @@
 <h3>Add Activity</h3>
 <p>Use the form below to create a new activity</p>
 
+<div class="action-buttons">
+	<button type="button" @onclick="HandleCancel" class="btn btn-primary action-button" title="Cancel and Go Back"><span class="oi oi-caret-left"></span><span class="d-none">Cancel</span></button>
+</div>
+
 <EditForm Model="@activity" OnValidSubmit="HandleValidSubmitAsync">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
@@ -14,7 +18,6 @@
 	<ActivityForm Activity="@activity" ReadOnly="false" />
 
 	<button type="submit" class="btn btn-primary" title="Submit the Fields">Submit</button>
-	<button type="button" @onclick="HandleCancel" class="btn btn-primary" title="Cancel and Go Back">Cancel</button>
 </EditForm>
 
 @code {
