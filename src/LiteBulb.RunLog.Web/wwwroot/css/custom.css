@@ -13,10 +13,10 @@
     text-decoration: none;
 }
 
-.action-buttons-left {
+.action-buttons {
     position: fixed;
     bottom: 6px;
-    left: 8px;
+    right: 8px;
 }
 
 /* .action-buttons-center {
@@ -25,12 +25,6 @@
     left: 50%;
     transform: translate(-50%, 0);
 }*/
-
-.action-buttons-right {
-    position: fixed;
-    bottom: 6px;
-    right: 8px;
-}
 
 .action-button {
     margin: 5px;
