@@ -30,7 +30,7 @@ else
 					<tr>
 						<td>@position.Id.ToString()</td>
 						<td>@position.ActivityId.ToString()</td>
-						<td>@position.TimeStamp</td>
+						<td>@position.TimeStamp.ToShortTimeString()</td>
 						<td>@string.Format("{0:F7}", position.Latitude)</td>
 						<td>@string.Format("{0:F7}", position.Longitude)</td>
 						<td>@string.Format("{0:F1}", position.Altitude)</td>

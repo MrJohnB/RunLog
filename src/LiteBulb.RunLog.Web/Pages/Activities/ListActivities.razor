@@ -49,8 +49,8 @@ else
 						<td><a class="clickable" href="/activities/@activity.Id">@activity.ShortDescription()</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@activity.Units</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@activity?.PositionCount</a></td>
-						<td><a class="clickable" href="/activities/@activity.Id">@activity.StartedAt</a></td>
-						<td><a class="clickable" href="/activities/@activity.Id">@activity.CompletedAt</a></td>
+						<td><a class="clickable" href="/activities/@activity.Id">@ToShortDateString(activity.StartedAt)</a></td>
+						<td><a class="clickable" href="/activities/@activity.Id">@ToShortDateString(activity.CompletedAt)</a></td>
 						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@activity.Id/edit" title="Edit Activity"><span class="d-none">Edit</span></a></td>
 						<td><a class="btn btn-primary oi oi-trash" href="/activities/@activity.Id/delete" title="Delete Activity"><span class="d-none">Delete</span></a></td>
 					</tr>
@@ -102,6 +102,14 @@ else
 		var pagedResult = await GetPagedResultAsync(Paging.PageOffset, Paging.PageSize);
 		activities = pagedResult.Data;
 		Pagination.UpdatePagingProperties(pagedResult.Total, Paging);
+	}
+
+	private string ToShortDateString(DateTime? dateTime)
+	{
+		if (dateTime.HasValue)
+			return dateTime.Value.ToShortDateString();
+
+		return string.Empty;
 	}
 
 	//TODO: get rid of timer

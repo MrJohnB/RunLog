@@ -9,7 +9,7 @@
 @using LiteBulb.RunLog.Web.ViewModels
 
 <h3>View Activity</h3>
-<p>Show some cool activity details here</p>
+<p>@activity.CreatedAt.ToShortDateString(): @activity.Description</p>
 
 <div class="action-buttons-left">
 	<button type="button" @onclick="HandleBack" class="btn btn-primary action-button" title="Go Back to Activities Screen"><span class="oi oi-caret-left"></span><span class="d-none">Back</span></button>
