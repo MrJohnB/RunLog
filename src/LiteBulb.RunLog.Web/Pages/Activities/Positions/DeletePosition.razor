@@ -64,11 +64,11 @@
 
 	private void HandleCancel()
 	{
-		if (string.IsNullOrWhiteSpace(ActivityId))
-			Navigation.NavigateTo($"/activities");
-		else
-			Navigation.NavigateTo($"/activities/{ActivityId}");
+		//if (string.IsNullOrWhiteSpace(ActivityId))
+		//	Navigation.NavigateTo($"/activities");
+		//else
+		Navigation.NavigateTo($"/activities/{ActivityId}/positions/{PositionId}");
 
-		//TODO: check if Activity with that id exists and display activities list if it doesn't
+		//TODO: check if Position with that id exists and display Activity if it doesn't
 	}
 }

@@ -7,7 +7,7 @@
 else
 {
 	<div class="table-responsive">
-		<table class="table table-sm">
+		<table class="table table-sm table-hover">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -28,18 +28,16 @@ else
 				@foreach (var position in Positions)
 				{
 					<tr>
-						<td>@position.Id.ToString()</td>
-						<td>@position.ActivityId.ToString()</td>
-						<td>@position.TimeStamp.ToShortTimeString()</td>
-						<td>@string.Format("{0:F7}", position.Latitude)</td>
-						<td>@string.Format("{0:F7}", position.Longitude)</td>
-						<td>@string.Format("{0:F1}", position.Altitude)</td>
-						<td>@string.Format("{0:F1}", position.Accuracy)</td>
-						<td>@string.Format("{0:F1}", position.AltitudeAccuracy)</td>
-						<td>@string.Format("{0:F1}", position.Heading)</td>
-						<td>@string.Format("{0:F1}", position.Speed)</td>
-						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@position.ActivityId/positions/@position.Id/edit" title="Edit Position"><span class="d-none">Edit</span></a></td>
-						<td><a class="btn btn-primary oi oi-trash" href="/activities/@position.ActivityId/positions/@position.Id/delete" title="Delete Position"><span class="d-none">Delete</span></a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@position.Id</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@position.ActivityId</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@position.TimeStamp.ToShortTimeString()</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F7}", position.Latitude)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F7}", position.Longitude)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F1}", position.Altitude)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F1}", position.Accuracy)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F1}", position.AltitudeAccuracy)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F1}", position.Heading)</a></td>
+						<td><a class="clickable" href="/activities/@position.ActivityId/positions/@position.Id">@string.Format("{0:F1}", position.Speed)</a></td>
 					</tr>
 				}
 			</tbody>

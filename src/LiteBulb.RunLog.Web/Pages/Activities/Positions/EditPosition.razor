@@ -62,13 +62,13 @@
 
 		Console.WriteLine($"Position object with id: '{position.Id}' was updated successfully.");
 		//TODO: check if Activity with that id exists and display activities list if it doesn't
-		Navigation.NavigateTo($"/activities/{position.ActivityId}");
+		Navigation.NavigateTo($"/activities/{position.ActivityId}/positions/{position.Id}");
 	}
 
 	private void HandleCancel()
 	{
-		Navigation.NavigateTo($"/activities/{position.ActivityId}");
+		Navigation.NavigateTo($"/activities/{position.ActivityId}/positions/{position.Id}");
 
-		//TODO: check if Activity with that id exists and display activities list if it doesn't
+		//TODO: check if Position with that id exists and display Activity if it doesn't
 	}
 }

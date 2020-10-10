@@ -1,10 +1,17 @@
 ﻿@page "/activities/{ActivityId}/positions/{PositionId}"
 @inject HttpClient Http
+@inject NavigationManager Navigation
 @inject ApiSettings Settings
 @using LiteBulb.RunLog.Dtos
 
 <h3>View Position</h3>
 <p>Position details</p>
+
+<div class="action-buttons">
+	<button type="button" @onclick="HandleBack" class="btn btn-primary action-button" title="Go Back to Activity Screen"><span class="oi oi-caret-left"></span><span class="d-none">Back</span></button>
+	<a href="/activities/@position.ActivityId/positions/@position.Id/edit" class="btn btn-primary action-button" title="Edit Position"><span class="oi oi-pencil"></span><span class="d-none">Edit</span></a>
+	<a href="/activities/@position.ActivityId/positions/@position.Id/delete" class="btn btn-primary action-button" title="Delete Position"><span class="oi oi-trash"></span><span class="d-none">Delete</span></a>
+</div>
 
 <EditForm Model="@position">
 
@@ -38,5 +45,10 @@
 		}
 
 		Console.WriteLine($"Position object with id: '{PositionId}' was found successfully.");
+	}
+
+	private void HandleBack()
+	{
+		Navigation.NavigateTo($"/activities/{ActivityId}");
 	}
 }
