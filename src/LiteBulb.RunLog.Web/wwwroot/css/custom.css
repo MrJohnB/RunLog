@@ -27,9 +27,9 @@
 }*/
 
 .action-button {
-    margin: 5px;
-    width: 42px;
-    line-height: 1.7em;
+    margin: 2px;
+    width: 36px;
+    line-height: 1.4em;
     border-radius: 100%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -38,6 +38,18 @@
         top: 2px;
     }
 
-    .action-button [class*="oi-caret-left"] {
+    .action-button [class*="oi-caret-left"],
+    .action-button [class*="oi-media-record"],
+    .action-button [class*="oi-media-stop"],
+    .action-button [class*="oi-map-marker"] {
         right: 1px;
+    }
+
+    .action-button [class*="oi-pencil"],
+    .action-button [class*="oi-trash"] {
+        right: 2px;
+    }
+
+    .action-button [class*="oi-plus"] {
+        right: 3px;
     }
