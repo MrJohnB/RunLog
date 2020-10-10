@@ -61,11 +61,11 @@
 		}
 
 		Console.WriteLine($"Activity object with id: '{activity.Id}' was updated successfully.");
-		Navigation.NavigateTo("/activities");
+		Navigation.NavigateTo($"/activities/{activity.Id}");
 	}
 
 	private void HandleCancel()
 	{
-		Navigation.NavigateTo("/activities");
+		Navigation.NavigateTo($"/activities/{activity.Id}");
 	}
 }

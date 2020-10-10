@@ -34,8 +34,6 @@ else
 					<th>Positions</th>
 					<th>Start Time</th>
 					<th>End Time</th>
-					<th><span class="d-none">Edit</span></th>
-					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -51,8 +49,6 @@ else
 						<td><a class="clickable" href="/activities/@activity.Id">@activity?.PositionCount</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@ToShortDateString(activity.StartedAt)</a></td>
 						<td><a class="clickable" href="/activities/@activity.Id">@ToShortDateString(activity.CompletedAt)</a></td>
-						<td><a class="btn btn-primary oi oi-pencil" href="/activities/@activity.Id/edit" title="Edit Activity"><span class="d-none">Edit</span></a></td>
-						<td><a class="btn btn-primary oi oi-trash" href="/activities/@activity.Id/delete" title="Delete Activity"><span class="d-none">Delete</span></a></td>
 					</tr>
 				}
 			</tbody>
@@ -67,8 +63,6 @@ else
 					<th>Positions</th>
 					<th>Started</th>
 					<th>Completed</th>
-					<th><span class="d-none">Edit</span></th>
-					<th><span class="d-none">Delete</span></th>
 				</tr>
 			</tfoot>
 		</table>

@@ -49,7 +49,7 @@
 		var createdActivity = await responseMessage.Content.ReadFromJsonAsync<ActivityDto>();
 
 		Console.WriteLine($"Activity object with id: '{createdActivity.Id}' was created successfully.");
-		Navigation.NavigateTo("/activities");
+		Navigation.NavigateTo($"/activities/{createdActivity.Id}");
 		// Or: Reset the form
 		//InitializeActivity();
 	}
