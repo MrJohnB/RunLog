@@ -4,7 +4,7 @@
 
 ![RunLog Logo](https://raw.githubusercontent.com/MrJohnB/RunLog/master/src/LiteBulb.RunLog.Web/wwwroot/runlog-logo.png)
 
-- [RunLog Website](https://runlogstorageaccount.z13.web.core.windows.net/)
+- [RunLog Website](https://runlogstorageaccount.z19.web.core.windows.net/)
 - [RunLog REST API](https://runlog.azurewebsites.net/index.html)
 
 # Introduction
