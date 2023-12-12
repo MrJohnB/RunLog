@@ -95,6 +95,12 @@ namespace LiteBulb.RunLog.Api
 
 			// Add Json settings
 			//services.AddControllers();
+
+			////services.AddControllers()
+			////	.AddJsonOptions(options =>
+			////		options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+			// don't need bug fix anymore
 			services.AddControllers(options => options.SuppressAsyncSuffixInActionNames = false) // ASP.NET Core 3.0 bug: https://stackoverflow.com/questions/59288259/asp-net-core-3-0-createdataction-returns-no-route-matches-the-supplied-values
 				.AddNewtonsoftJson(options => options.UseMemberCasing()); // Probably don't need this (so don't need Microsoft.AspNetCore.Mvc.NewtonsoftJson) because I'm not using model annotations
 
@@ -152,7 +158,7 @@ namespace LiteBulb.RunLog.Api
 				c.RoutePrefix = string.Empty;
 			});
 
-			if (env.IsDevelopment())
+			if (env.IsDevelopment()) // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/environments?view=aspnetcore-5.0
 			{
 				logger.LogInformation("In Development environment");
 				app.UseDeveloperExceptionPage();
@@ -185,7 +191,7 @@ namespace LiteBulb.RunLog.Api
 		/// <summary>
 		/// Set the comments path for the Swagger JSON and UI.
 		/// </summary>
-		/// <returns>Path of the swagger.json file</returns>
+		/// <returns>Path of the Swagger API XML file</returns>
 		private static string GetXmlPath()
 		{
 			string basePath = AppContext.BaseDirectory;
