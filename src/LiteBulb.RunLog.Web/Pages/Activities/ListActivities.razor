@@ -1,7 +1,7 @@
 @page "/activities"
 @implements IDisposable
 @inject HttpClient Http
-@inject ApiSettings Settings
+@inject ApiSettings Settings // TODO: IOptions pattern
 @using System.Timers
 @using LiteBulb.Common.DataModel
 @using LiteBulb.RunLog.Dtos

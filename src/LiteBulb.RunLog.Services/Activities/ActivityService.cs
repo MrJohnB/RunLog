@@ -133,7 +133,8 @@ namespace LiteBulb.RunLog.Services.Activities
 			catch (Exception ex)
 			{
 				return new ServiceResponse<Activity>(true,
-					$"Error occurred while updating an Activity object.  Update was not successful.  Exception follows: {ex.Message}");
+					$"Error occurred while updating an Activity object.  Update was not successful.  Exception follows: {ex.Message}",
+					ex);
 			}
 
 			if (updatedResult == null)

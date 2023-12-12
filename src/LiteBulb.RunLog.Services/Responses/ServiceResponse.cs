@@ -2,10 +2,10 @@
 
 namespace LiteBulb.RunLog.Services.Responses
 {
-	/// <summary>
-	/// The response object from a service.
-	/// </summary>
-	public class ServiceResponse
+    /// <summary>
+    /// The response object from a service (for void return type service methods).
+    /// </summary>
+    public class ServiceResponse
 	{
 		/// <summary>
 		/// Whether any errors occurred during the service operation.
@@ -28,7 +28,7 @@ namespace LiteBulb.RunLog.Services.Responses
 		/// </summary>
 		/// <param name="hasErrors">Boolean says that service resulted in an error</param>
 		/// <param name="errorMessage">The message describing the error</param>
-		/// <param name="exception">Exception objet</param>
+		/// <param name="exception">Exception object</param>
 		public ServiceResponse(bool hasErrors, string errorMessage, Exception exception = null)
 		{
 			HasErrors = hasErrors;
@@ -57,13 +57,14 @@ namespace LiteBulb.RunLog.Services.Responses
 		/// </summary>
 		public T Result { get; private set; }
 
-		/// <summary>
-		/// Creates an unsuccessful (error) response.
-		/// Note: Result property will be null.
-		/// </summary>
-		/// <param name="hasErrors">Boolean says that service resulted in an error</param>
-		/// <param name="errorMessage">The message describing the error</param>
-		public ServiceResponse(bool hasErrors, string errorMessage, Exception exception = null) : base(hasErrors, errorMessage, exception)
+        /// <summary>
+        /// Creates an unsuccessful (error) response.
+        /// Note: Result property will be null.
+        /// </summary>
+        /// <param name="hasErrors">Boolean says that service resulted in an error</param>
+        /// <param name="errorMessage">The message describing the error</param>
+        /// <param name="exception">Exception objet</param>
+        public ServiceResponse(bool hasErrors, string errorMessage, Exception exception = null) : base(hasErrors, errorMessage, exception)
 		{
 		}
 
